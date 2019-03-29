@@ -2,23 +2,24 @@
   <div class="mx-auto">
     <section>
       <template v-if="post_header[0]">
-        <header class="bg-orange">
-          <h2 class="h2 m0">{{ post_header[0].data.title }}</h2>
+        <header class="bg-grey-darkest text-grey-lighter mx-5 my-5 rounded shadow-md p-5">
+          <h2 class="h2 mb-5">{{ post_header[0].data.title }}</h2>
           <div>
             {{ post_header[0].data.ups }}
             <a
               :href="post_header[0].data.url"
               target="_blank"
+              class="no-underline text-orange"
             >Open original</a>
           </div>
         </header>
-        <vue-markdown
+        <vue-markdown 
           v-if="post_header[0].data.selftext"
-          class="black bg-darken-1 p2"
+          class="bg-grey-darkest text-grey-lighter mx-5 my-5 rounded shadow-md p-5"
           :source="post_header[0].data.selftext"
         ></vue-markdown>
       </template>
-      <div>
+      <div class="bg-grey-darkest text-grey-lighter mx-5 my-5 rounded shadow-md p-5">
         <comment
           v-for="comment in comments"
           :key="comment.data.id"
@@ -72,3 +73,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+a:link {
+  color: skyblue;
+}
+
+/* visited link */
+a:visited {
+  color: grey;
+}
+</style>

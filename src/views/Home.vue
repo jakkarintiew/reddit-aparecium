@@ -4,19 +4,19 @@
       <div class="container mx-auto text-center justify-center">
         <img width="330" alt="Aparecium logo" src="../assets/logo.svg">
         <h1 class="logo-text mt-3 mb-10">Reddit Aparecium</h1>
-        <form v-on:submit.prevent="fetchData()" class="w-max">
+        <form v-on:submit.prevent="goAparecium()" class="w-max">
           <div class="w-2/3 flex mx-auto items-center">
             <input
-              v-model="post_link"
+              v-model="postUrl"
               type="text"
               class="input-form flex-1 appearance-none rounded-l-lg bg-grey-light shadow-md p-4 text-grey-darker mr-0 focus:outline-none focus:bg-grey-ligtest"
               placeholder="Copy Reddit thread URL here..."
               autocapitalize="off"
               autocorrect="off"
-              @keyup.enter="fetchData()"
+              @keyup.enter="goAparecium()"
             >
             <button
-              @click="fetchData()"
+              @click="goAparecium()"
               class="input-btn color-3 appearance-none bg-indigo-darker text-grey-light text-base font-semibold tracking-wide uppercase p-4 rounded-r-lg shadow-md hover:bg-indigo-dark focus:outline-none"
               type="button"
             >GO</button>
@@ -32,15 +32,16 @@
 
 <script>
 // @ is an alias to /src
+import { mapGetters, mapActions } from "vuex";
 import GridLoader from "vue-spinner/src/GridLoader.vue";
 
 export default {
   name: "home",
   data() {
     return {
-      post_link: "",
-      post: [],
+      postUrl: "",
       postId: "",
+      post: [],
       subreddit: "",
       loading: false,
       color: "#fb5f2b",
@@ -52,44 +53,35 @@ export default {
   components: {
     GridLoader
   },
+  computed: mapGetters(["getPostData"]),
   methods: {
-    fetchData() {
-      // get post
-      if (this.post_link == "") {
-        this.loading = false;
-        this.$router.push({ name: "home" });
-      } else {
-        this.loading = true;
-        fetch(this.post_link + ".json", {
-          headers: {
-            Accept: "application/json"
-          }
-        })
-          .then(res => res.json())
-          .then(data => {
-            this.post = data;
-          })
-          .then(() => {
-            this.postId = this.post[0].data.children[0].data.id;
-            this.subreddit = this.post[0].data.children[0].data.subreddit;
-            this.goPost(this.postId);
-          });
-      }
-    },
+    ...mapActions(["fetchPostData"]),
     goPost(postId) {
       if (postId != "") {
         this.$router.push({
           name: "aparecium",
-          params: { post: this.post, postId: this.postId }
+          params: { post: this.getPostData, postId: this.postId }
         });
       }
+    },
+    goAparecium() {
+      this.loading = true;
+      this.fetchPostData(this.postUrl);
+    },
+  },
+  watch: {
+    getPostData (newPost, oldPost) {
+      console.log(newPost)
+      newPost = this.getPostData;
+      this.postId = this.getPostData[0].data.children[0].data.id;
+      this.subreddit = this.getPostData[0].data.children[0].data.subreddit;
+      this.goPost(this.postId);
     }
   }
 };
 </script>
 
 <style scoped>
-
 header {
   position: relative;
   background: #fb5f2b;
