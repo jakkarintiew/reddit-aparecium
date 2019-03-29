@@ -1,20 +1,19 @@
 <template>
   <div class="home">
     <header>
-      <div>
+      <div class="container mx-auto text-center justify-center">
         <img width="330" alt="Aparecium logo" src="../assets/logo.svg">
         <h1 class="logo-text mt-3 mb-10">Reddit Aparecium</h1>
-
-        <form class="w-max">
-          <div class="w-1/2 flex mx-auto items-center">
+        <form v-on:submit.prevent="fetchData()" class="w-max">
+          <div class="w-2/3 flex mx-auto items-center">
             <input
-              @keyup.enter="fetchData()"
-              v-model="input"
+              v-model="post_link"
               type="text"
               class="input-form flex-1 appearance-none rounded-l-lg bg-grey-light shadow-md p-4 text-grey-darker mr-0 focus:outline-none focus:bg-grey-ligtest"
               placeholder="Copy Reddit thread URL here..."
               autocapitalize="off"
               autocorrect="off"
+              @keyup.enter="fetchData()"
             >
             <button
               @click="fetchData()"
@@ -25,25 +24,76 @@
         </form>
       </div>
     </header>
+    <div :disabled="loading" v-if="this.loading" transition="fade">
+      <grid-loader class="mx-auto" :loading="loading" :color="color" :size="size"></grid-loader>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import GridLoader from "vue-spinner/src/GridLoader.vue";
+
 export default {
   name: "home",
+  data() {
+    return {
+      post_link: "",
+      post: [],
+      postId: "",
+      subreddit: "",
+      loading: false,
+      color: "#fb5f2b",
+      size: "15px",
+      margin: "2px",
+      radius: "2px"
+    };
+  },
   components: {
-    PulseLoader
+    GridLoader
+  },
+  methods: {
+    fetchData() {
+      // get post
+      if (this.post_link == "") {
+        this.loading = false;
+        this.$router.push({ name: "home" });
+      } else {
+        this.loading = true;
+        fetch(this.post_link + ".json", {
+          headers: {
+            Accept: "application/json"
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            this.post = data;
+          })
+          .then(() => {
+            this.postId = this.post[0].data.children[0].data.id;
+            this.subreddit = this.post[0].data.children[0].data.subreddit;
+            this.goPost(this.postId);
+          });
+      }
+    },
+    goPost(postId) {
+      if (postId != "") {
+        this.$router.push({
+          name: "aparecium",
+          params: { post: this.post, postId: this.postId }
+        });
+      }
+    }
   }
 };
 </script>
 
 <style scoped>
+
 header {
   position: relative;
   background: #fb5f2b;
-  padding: 5rem 0 5rem;
+  padding: 4rem 0 4rem;
   margin-bottom: 3rem;
   box-shadow: 0 10px 80px -2px rgba(0, 0, 0, 0.5);
   overflow: hidden;
@@ -80,7 +130,13 @@ header {
   transition: all 0.4s ease-in-out;
 }
 .input-btn.color-3 {
-    background-image: linear-gradient(to right, #5165be, #51336e, #526da1, rgb(95, 35, 122));
+  background-image: linear-gradient(
+    to right,
+    #5165be,
+    #51336e,
+    #526da1,
+    rgb(95, 35, 122)
+  );
 }
 .input-btn:active {
   transform: translateY(1px);
@@ -91,6 +147,22 @@ header {
   font-family: "Quicksand", sans-serif;
   font-weight: lighter;
   color: #f2f2f2;
+}
+
+/* always present */
+.fade-transition {
+  transition: all 1s ease;
+  height: 30px;
+  padding: 10px;
+  overflow: hidden;
+}
+/* .fade-enter defines the starting state for entering */
+/* .fade-leave defines the ending state for leaving */
+.fade-enter,
+.fade-leave {
+  height: 0;
+  padding: 0 10px;
+  opacity: 0;
 }
 </style>
 

@@ -10,8 +10,8 @@
   "dependencies": {
     "autoprefixer": "^9.5.0",
     "tailwindcss": "^0.7.4",
-    "typeface-quicksand": "0.0.71",
     "vue": "^2.6.6",
+    "vue-markdown": "^2.2.4",
     "vue-router": "^3.0.1",
     "vue-spinner": "^1.0.3"
   },
@@ -22,6 +22,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {
