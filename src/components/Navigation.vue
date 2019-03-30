@@ -1,88 +1,88 @@
 <template>
-  <div>
-    <nav class="nav flex items-center justify-left flex-wrap shadow-lg">
-      <router-link to="/">
-        <img class="ml-4 mr-2 my-2" width="35" alt="Aparecium logo" src="@/assets/logo.svg">
-      </router-link>
-      <span class="logo-text">Reddit Aparecium</span>
-      <span class="w-2/3">
-        <form class="w-full" v-on:submit.prevent="goAparecium()">
-          <div class="w-full ml-5 flex items-center justify-center">
-            <input
-              v-model="postUrl"
-              type="text"
-              class="w-2/3 input-form appearance-none rounded-l bg-grey-light shadow-md p-2 text-grey-darker mr-0 focus:outline-none focus:bg-grey-ligtest"
-              placeholder="Copy Reddit thread URL here..."
-              autocapitalize="off"
-              autocorrect="off"
-              @keyup.enter="goAparecium()"
-            >
-            <button
-              @click="goAparecium()"
-              class="input-btn color-3 appearance-none bg-indigo-darker text-grey-light text-base font-semibold tracking-wide p-2 rounded-r shadow-md hover:bg-indigo-dark focus:outline-none"
-              type="button"
-            >GO</button>
-          </div>
-        </form>
-      </span>
-    </nav>
-  </div>
+  <sequential-entrance fromTop>
+    <div class="home ">
+      <header class="w-full">
+        <div class="container mx-auto text-center justify-center">
+          <img width="330" alt="Aparecium logo" src="../assets/logo.svg">
+          <h1 class="logo-text mt-3 mb-10">Reddit Aparecium</h1>
+          <form v-on:submit.prevent="runAparecium()" class="w-max">
+            <div class="w-2/3 flex mx-auto items-center">
+              <input
+                v-model="postUrl"
+                type="text"
+                class="input-form flex-1 appearance-none rounded-l-lg bg-grey-light shadow-md p-4 text-grey-darker mr-0 focus:outline-none focus:bg-grey-ligtest"
+                placeholder="Copy Reddit thread URL here..."
+                autocapitalize="off"
+                autocorrect="off"
+                @keyup.enter="runAparecium()"
+              >
+              <button
+                @click="runAparecium()"
+                class="input-btn color-3 appearance-none bg-indigo-darker text-grey-light text-base font-semibold tracking-wide uppercase p-4 rounded-r-lg shadow-md hover:bg-indigo-dark focus:outline-none"
+                type="button"
+              >GO</button>
+            </div>
+          </form>
+        </div>
+      </header>
+    </div>
+  </sequential-entrance>
 </template>
 
 <script>
+// @ is an alias to /src
 import { mapGetters, mapActions } from "vuex";
-import GridLoader from "vue-spinner/src/GridLoader.vue";
 
 export default {
-  name: "navigation",
+  name: "home",
   data() {
     return {
       postUrl: "",
-      post: [],
       postId: "",
-      subreddit: "",
-      loading: false,
       color: "#fb5f2b",
       size: "15px",
       margin: "2px",
       radius: "2px"
     };
   },
-  components: {
-    GridLoader
-  },
-  computed: mapGetters(["getPostData"]),
+  computed: mapGetters(["getPostData", "getLoading"]),
   methods: {
-    ...mapActions(["fetchPostData"]),
-    goPost(postId) {
-      if (postId != "") {
-        this.$router.push({
-          name: "aparecium",
-          params: { post: this.getPostData, postId: this.postId }
-        });
+    ...mapActions(["fetchPostData", "changeLoadingTrue", "changeLoadingFalse"]),
+    runAparecium() {
+      if (this.postUrl != "") {
+        this.changeLoadingTrue();
+        this.fetchPostData(this.postUrl);
       }
     },
-    goAparecium() {
-      this.loading = true;
-      this.fetchPostData(this.postUrl);
-    },
+    routePost(postId) {
+      if (postId != "") {
+        this.$router.push({
+          path: `/comments/${postId}`,
+          params: {
+            post: this.getPostData,
+            postId: this.postId
+          }
+        });
+      }
+    }
   },
   watch: {
-    getPostData (newPost, oldPost) {
-      console.log(newPost)
-      newPost = this.getPostData;
+    // eslint-disable-next-line
+    getPostData() {
       this.postId = this.getPostData[0].data.children[0].data.id;
-      this.subreddit = this.getPostData[0].data.children[0].data.subreddit;
-      this.goPost(this.postId);
+      this.routePost(this.postId);
     }
   }
 };
 </script>
 
-
 <style scoped>
-.nav {
+header {
+  position: relative;
   background: #fb5f2b;
+  padding: 4rem 0 4rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 80px -2px rgba(0, 0, 0, 0.5);
 }
 .input-form {
   font-family: "Quicksand", sans-serif;
@@ -92,11 +92,6 @@ export default {
 .input-form:focus {
   opacity: 1;
   transition: 0.5s;
-}
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .input-btn {
   background: #30133d;
@@ -132,7 +127,6 @@ export default {
 .logo-text {
   font-family: "Quicksand", sans-serif;
   font-weight: lighter;
-  font-size: 24px;
   color: #f2f2f2;
 }
 </style>

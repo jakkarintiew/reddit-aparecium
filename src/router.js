@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/views/Home.vue'
-import Aparecium from '@/views/Aparecium.vue'
+import Main from '@/views/Main.vue'
 
 Vue.use(Router)
 
@@ -10,12 +9,11 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Main
     },
     {
       path: '/comments/:postId',
-      name: 'aparecium',
-      component: Aparecium,
+      component: Main,
       props: true
     }
   ]

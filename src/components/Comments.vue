@@ -1,8 +1,8 @@
 <template>
-  <div class="mx-auto">
+  <div>
     <section>
       <template v-if="post_header[0]">
-        <header class="bg-grey-darkest text-grey-lighter mx-5 my-5 rounded shadow-md p-5">
+        <header class="bg-grey-darkest text-grey-lighter my-5 rounded shadow-md p-5">
           <h2 class="mb-5">{{ post_header[0].data.title }}</h2>
           <div>
             {{ post_header[0].data.ups }}
@@ -13,20 +13,20 @@
             >Open original</a>
           </div>
         </header>
-        <vue-markdown 
+        <vue-markdown
           v-if="post_header[0].data.selftext"
-          class="bg-grey-darkest whitespace-pre-line text-grey-lighter mx-5 my-5 rounded shadow-md p-5"
+          class="bg-grey-darkest whitespace-pre-line text-grey-lighter my-5 rounded shadow-md p-5"
           :source="post_header[0].data.selftext"
         ></vue-markdown>
       </template>
-      <div class="commment bg-grey-darkest text-grey-lighter mx-5 rounded shadow-md p-3">
+      <div class="commment bg-grey-darkest text-grey-lighter rounded shadow-md p-3">
         <comment
           v-for="comment in comments"
           :key="comment.data.id"
           :body="comment.data.body"
           :author="comment.data.author"
           :replies="comment.data.replies"
-        />
+        ></comment>
       </div>
     </section>
   </div>
@@ -74,17 +74,9 @@ export default {
 </script>
 
 <style scoped>
-.commment  {
+.commment {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: lighter;
-}
-a:link {
-  color: skyblue;
-}
-
-/* visited link */
-a:visited {
-  color: skyblue;
 }
 </style>
