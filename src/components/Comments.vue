@@ -3,23 +3,23 @@
     <section>
       <template v-if="post_header[0]">
         <header class="bg-grey-darkest text-grey-lighter mx-5 my-5 rounded shadow-md p-5">
-          <h2 class="h2 mb-5">{{ post_header[0].data.title }}</h2>
+          <h2 class="mb-5">{{ post_header[0].data.title }}</h2>
           <div>
             {{ post_header[0].data.ups }}
             <a
               :href="post_header[0].data.url"
               target="_blank"
-              class="no-underline text-orange"
+              class="no-underline"
             >Open original</a>
           </div>
         </header>
         <vue-markdown 
           v-if="post_header[0].data.selftext"
-          class="bg-grey-darkest text-grey-lighter mx-5 my-5 rounded shadow-md p-5"
+          class="bg-grey-darkest whitespace-pre-line text-grey-lighter mx-5 my-5 rounded shadow-md p-5"
           :source="post_header[0].data.selftext"
         ></vue-markdown>
       </template>
-      <div class="bg-grey-darkest text-grey-lighter mx-5 my-5 rounded shadow-md p-5">
+      <div class="commment bg-grey-darkest text-grey-lighter mx-5 rounded shadow-md p-3">
         <comment
           v-for="comment in comments"
           :key="comment.data.id"
@@ -54,7 +54,7 @@ export default {
     "vue-markdown": VueMarkdown
   },
   methods: {
-    getComments: function(id) {
+    getComments: function() {
       this.post_header = this.post[0].data.children;
       this.comments = this.post[1].data.children;
     }
@@ -64,7 +64,6 @@ export default {
   },
   watch: {
     $route: function(to, from) {
-      console.log("changing route at Comments")
       if (to.params.postId === from.params.postId) return false;
       this.post_header = [];
       this.comments = [];
@@ -75,12 +74,17 @@ export default {
 </script>
 
 <style scoped>
+.commment  {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: lighter;
+}
 a:link {
   color: skyblue;
 }
 
 /* visited link */
 a:visited {
-  color: grey;
+  color: skyblue;
 }
 </style>

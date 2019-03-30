@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navigation/>
-    <Comments v-bind:post="this.post" v-bind:postId="this.postId"/>
+    <Comments class="container flex justify-start" v-bind:post="this.post" v-bind:postId="this.postId"/>
   </div>
 </template>
 

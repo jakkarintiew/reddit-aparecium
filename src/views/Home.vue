@@ -67,12 +67,11 @@ export default {
     goAparecium() {
       this.loading = true;
       this.fetchPostData(this.postUrl);
-    },
+    }
   },
   watch: {
-    getPostData (newPost, oldPost) {
-      console.log(newPost)
-      newPost = this.getPostData;
+    // eslint-disable-next-line
+    getPostData(newPost, oldPost) {
       this.postId = this.getPostData[0].data.children[0].data.id;
       this.subreddit = this.getPostData[0].data.children[0].data.subreddit;
       this.goPost(this.postId);

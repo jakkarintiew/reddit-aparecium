@@ -24,4 +24,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+a:link {
+  color: skyblue;
+}
+
+/* visited link */
+a:visited {
+  color: grey;
+}
+</style>
 </style>

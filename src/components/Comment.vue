@@ -1,18 +1,18 @@
 <template>
-  <div :class="{ 'child-comment': isChild }" v-if="body">
-    <header class="bg-black ml-2 mt-2 mb-0 rounded-t p-3" v-on:click="toggleChildren">
+  <div class="bg-black m-0 mt-2 rounded-lg shadow-md p-1 border border-grey-darkest" :class="{ 'child-comment': isChild }" v-if="body">
+    <header class="bg-transparent ml-1 m-1 p-2" v-on:click="toggleChildren">
       <span
         class="collapse-button flex-auto bg-grey-darkest shadow-small mr-1 px-2 py-1"
       >{{ showChildren ? '-' : '+' }}</span>
       <span
-        class="flex-auto text-center bg-indigo-darkest rounded-lg shadow-small px-2 py-1"
+        class="flex-auto text-center bg-indigo-darker rounded-lg shadow-small px-2 py-1"
       >{{ author }}</span>
     </header>
     <div
-      class="bg-black text-grey-lighter ml-2 mr-0 mt-0 rounded-b shadow-md p-2 pr-0"
+      class="bg-transparent leading-normal whitespace-pre-line text-grey-lighter m-0 ml-2 p-0"
       v-if="showChildren"
     >
-      <vue-markdown class="px-5 pb-2" :source="body"></vue-markdown>
+      <vue-markdown class="px-3" :source="body"></vue-markdown>
       <template v-if="childComments.length && showChildren">
         <div>
           <comment
