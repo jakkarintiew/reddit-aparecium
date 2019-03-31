@@ -1,13 +1,11 @@
 <template>
   <div id="app">
-      <router-view/>
+    <router-view/>
   </div>
 </template>
 
 <script>
 import "./assets/css/main.css";
-
-
 
 export default {
   name: "app",
@@ -21,10 +19,11 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Quicksand");
 
 body {
-  background-color: #332a3e;
+  background-color: #453e61;
+  min-height: 25cm;
+  overflow-x: hidden;
 }
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -36,5 +35,4 @@ a:link {
 a:visited {
   color: grey;
 }
-
 </style>

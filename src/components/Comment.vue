@@ -4,17 +4,17 @@
     :class="{ 'child-comment': isChild }"
     v-if="body"
   >
-    <header class="bg-transparent cursor-pointer ml-1 m-1 p-2" v-on:click="toggleChildren">
+    <header class="bg-transparent ml-1 m-1 p-2" v-on:click="toggleChildren">
       <span
-        class="collapse-button cursor-pointer flex-auto bg-grey-darkest shadow-small mr-1 px-2 py-1 hover:text-blue-light hover:bg-blue-darker"
+        class="collapse-button cursor-pointer flex-auto bg-grey-darkest shadow-md px-2 py-1 hover:text-blue-light hover:bg-blue-darker"
       >{{ showChildren ? '-' : '+' }}</span>
       <span
-        class="flex-auto text-center bg-indigo-darker rounded-lg shadow-small px-2 py-1"
+        class="flex-auto text-center bg-indigo-darker rounded-lg shadow-md px-2 py-1 m-2"
       >{{ author }}</span>
     </header>
     <transition leave-active-class="animated fadeOut">
       <div
-        class="comment-anim bg-transparent leading-normal whitespace-pre-line text-grey-lighter m-0 ml-2 p-0"
+        class="comment-anim bg-transparent leading-normal whitespace-pre-line text-grey-light m-0 p-0"
         v-if="showChildren"
       >
         <vue-markdown class="px-3" :source="body"></vue-markdown>

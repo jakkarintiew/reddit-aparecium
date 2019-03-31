@@ -2,24 +2,31 @@
   <div>
     <section>
       <template v-if="post_header[0]">
-        <header class="bg-grey-darkest text-grey-lighter my-5 rounded shadow-md p-5">
-          <h2 class="mb-5">{{ post_header[0].data.title }}</h2>
+        <header class="title bg-black text-grey-lighter rounded shadow-md p-5">
           <div>
-            {{ post_header[0].data.ups }}
-            <a
-              :href="post_header[0].data.url"
-              target="_blank"
-              class="no-underline"
-            >Open original</a>
+            <a :href="post_header[0].data.url" target="_blank" class="no-underline">
+              <h2 class="mb-5 text-hairline text-grey-light">{{ post_header[0].data.title }}</h2>
+            </a>
+            <div class="my-2">
+              Posted by
+              <span
+                class="flex-auto text-center bg-red-darker rounded-lg shadow-md px-2 py-1"
+              >{{ post_header[0].data.author }}</span>
+            </div>
+            <div class="text-orange my-2">{{ post_header[0].data.ups }}</div>
           </div>
         </header>
         <vue-markdown
           v-if="post_header[0].data.selftext"
-          class="bg-grey-darkest whitespace-pre-line text-grey-lighter my-5 rounded shadow-md p-5"
+          class="bg-black whitespace-pre-line text-grey-lighter my-5 rounded shadow-md p-5"
           :source="post_header[0].data.selftext"
         ></vue-markdown>
       </template>
-      <div class="commment bg-grey-darkest text-grey-lighter rounded shadow-md p-3">
+      <div class="text-grey-lighter rounded my-5">
+        <visualization></visualization>
+      </div>
+
+      <div class="commment bg-black text-grey-lighter rounded shadow-md p-3">
         <comment
           v-for="comment in comments"
           :key="comment.data.id"
@@ -36,6 +43,7 @@
 <script>
 import Comment from "@/components/Comment";
 import VueMarkdown from "vue-markdown";
+import Visualization from "@/components/Visualization";
 
 export default {
   name: "comments",
@@ -51,6 +59,7 @@ export default {
   },
   components: {
     comment: Comment,
+    visualization: Visualization,
     "vue-markdown": VueMarkdown
   },
   methods: {
@@ -74,6 +83,9 @@ export default {
 </script>
 
 <style scoped>
+/* .title {
+  font-family: "Quicksand", sans-serif;
+} */
 .commment {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
