@@ -4,6 +4,10 @@ import router from './router'
 import store from './store'
 import SequentialEntrance from 'vue-sequential-entrance'
 import 'vue-sequential-entrance/vue-sequential-entrance.css'
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+AOS.init();
 Vue.use(SequentialEntrance);
 
 Vue.config.productionTip = false

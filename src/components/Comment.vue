@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-black m-0 mt-2 rounded-lg shadow-md p-1 border border-grey-darkest"
+    class="bg-black m-2 rounded-lg shadow-md p-1 border border-grey-darkest"
     :class="{ 'child-comment': isChild }"
     v-if="body"
   >
@@ -14,7 +14,7 @@
     </header>
     <transition leave-active-class="animated fadeOut">
       <div
-        class="comment-anim bg-transparent leading-normal whitespace-pre-line text-grey-light m-0 p-0"
+        class="comment-anim bg-transparent leading-normal whitespace-pre-line text-grey-light"
         v-if="showChildren"
       >
         <vue-markdown class="px-3" :source="body"></vue-markdown>

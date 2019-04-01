@@ -20,9 +20,9 @@
             >
             <button
               @click="runAparecium()"
-              class="input-btn btn-hover color-10 appearance-none bg-indigo-darker text-grey-light text-base font-semibold tracking-wide uppercase p-4 rounded-r-lg shadow-md hover:bg-indigo-dark focus:outline-none"
+              class="input-btn btn-hover color-10 appearance-none text-white font-semibold tracking-wide uppercase p-4 rounded-r-lg shadow-md focus:outline-none"
               type="button"
-            >GO</button>
+            >Analyze</button>
           </div>
         </form>
       </header>

@@ -22,11 +22,15 @@
           :source="post_header[0].data.selftext"
         ></vue-markdown>
       </template>
-      <div class="text-grey-lighter rounded my-5">
+      <div data-aos="fade-right" data-aos-duration="300" class="text-grey-lighter rounded my-5">
         <visualization></visualization>
       </div>
 
-      <div class="commment bg-black text-grey-lighter rounded shadow-md p-3">
+      <div
+        data-aos="fade-right"
+        data-aos-duration="300"
+        class="commment bg-black text-grey-lighter rounded shadow-md p-2"
+      >
         <comment
           v-for="comment in comments"
           :key="comment.data.id"

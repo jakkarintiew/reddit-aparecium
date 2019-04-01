@@ -71,14 +71,12 @@ export default {
 
 <style scoped>
 .comments-anim {
-  animation-duration: 200ms;
-  animation-delay: 100ms;
+  animation-duration: 300ms;
 }
 .sidebar-anim {
-  animation-duration: 200ms;
-  animation-delay: 100ms;
+  animation-duration: 300ms;
 }
 .loader-anim {
-  animation-duration: 200ms;
+  animation-duration: 300ms;
 }
 </style>
