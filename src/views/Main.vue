@@ -42,7 +42,7 @@ export default {
   name: "aparecium",
   data() {
     return {
-      color: "#a14f77",
+      color: "#ec8c69",
       size: "15px",
       margin: "2px",
       radius: "2px"

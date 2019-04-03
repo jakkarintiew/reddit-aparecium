@@ -15,12 +15,12 @@
             </div>
             <div class="text-orange my-2">{{ post_header[0].data.ups }}</div>
           </div>
+          <vue-markdown
+            v-if="post_header[0].data.selftext"
+            class="bg-black whitespace-pre-line text-grey-lighter my-5"
+            :source="post_header[0].data.selftext"
+          ></vue-markdown>
         </header>
-        <vue-markdown
-          v-if="post_header[0].data.selftext"
-          class="bg-black whitespace-pre-line text-grey-lighter my-5 rounded shadow-md p-5"
-          :source="post_header[0].data.selftext"
-        ></vue-markdown>
       </template>
       <div data-aos="fade-right" data-aos-duration="300" class="text-grey-lighter rounded my-5">
         <visualization></visualization>

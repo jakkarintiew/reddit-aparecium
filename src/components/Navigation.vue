@@ -7,24 +7,26 @@
           <h1 class="logo-text text-grey-light font-hairline mt-3">Reddit Aparecium</h1>
           <h5 class="logo-text text-grey font-hairline mt-3">Analyze Reddit Comments</h5>
         </div>
-        <form v-on:submit.prevent="runAparecium()" class="w-max">
-          <div class="w-2/3 flex mx-auto items-center">
-            <input
-              v-model="postUrl"
-              type="text"
-              class="input-form flex-1 appearance-none rounded-l-lg bg-grey-light shadow-md p-4 text-grey-darkest mr-0 focus:outline-none focus:bg-grey-lightest"
-              placeholder="Copy Reddit thread URL here..."
-              autocapitalize="off"
-              autocorrect="off"
-              @keyup.enter="runAparecium()"
-            >
-            <button
-              @click="runAparecium()"
-              class="input-btn btn-hover color-10 appearance-none text-white font-semibold tracking-wide uppercase p-4 rounded-r-lg shadow-md focus:outline-none"
-              type="button"
-            >Analyze</button>
-          </div>
-        </form>
+        <div class="p5">
+          <form v-on:submit.prevent="runAparecium()">
+            <div class="w-2/3 flex mx-auto items-center">
+              <input
+                v-model="postUrl"
+                type="text"
+                class="input-form flex-1 appearance-none rounded-l-lg bg-grey-light shadow-md p-4 text-grey-darkest mr-0 focus:outline-none focus:bg-grey-lightest"
+                placeholder="Copy Reddit thread URL here..."
+                autocapitalize="off"
+                autocorrect="off"
+                @keyup.enter="runAparecium()"
+              >
+              <button
+                @click="runAparecium()"
+                class="input-btn btn-hover color-10 appearance-none text-white font-semibold tracking-wide uppercase p-4 rounded-r-lg shadow-md focus:outline-none"
+                type="button"
+              >Analyze</button>
+            </div>
+          </form>
+        </div>
       </header>
     </div>
   </sequential-entrance>
@@ -84,7 +86,12 @@ export default {
 header {
   position: relative;
   /* background-image: linear-gradient(-225deg, #a14f77 0%, #8D0B93 50%, #321575 100%);   */
-    background-image: linear-gradient(-225deg, #a14f77 0%, #562B7C 52%, #32709c 100%);
+  background-image: linear-gradient(
+    -225deg,
+    #a14f77 0%,
+    #562b7c 52%,
+    #32709c 100%
+  );
   /* background-image: linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%); */
   /* background-image: linear-gradient(-45deg, #874da2 0%, #c43a30 100%); */
   /* background-image: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%); */

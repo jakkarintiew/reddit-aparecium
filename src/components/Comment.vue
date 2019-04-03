@@ -12,7 +12,7 @@
         class="flex-auto text-center bg-indigo-darker rounded-lg shadow-md px-2 py-1 m-2"
       >{{ author }}</span>
     </header>
-    <transition leave-active-class="animated fadeOut">
+    <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <div
         class="comment-anim bg-transparent leading-normal whitespace-pre-line text-grey-light"
         v-if="showChildren"
@@ -20,7 +20,6 @@
         <vue-markdown class="px-3" :source="body"></vue-markdown>
         <template v-if="childComments.length && showChildren">
           <div>
-            <sequential-entrance fromBottom delay="50">
               <comment
                 v-for="comment in childComments"
                 class="comment-anim"
@@ -29,9 +28,7 @@
                 :author="comment.data.author"
                 :replies="comment.data.replies"
                 :is-child="true"
-              />
-            </sequential-entrance>
-          </div>
+              />          </div>
         </template>
       </div>
     </transition>

@@ -1,102 +1,81 @@
 <template>
-  <div id="viz">
-    <div></div>
+  <div class="bg-black text-grey-lighter rounded shadow-md p-5">
+    <h1>Circle Pack in D3</h1>
+    <!-- <h2>{{ msg }}</h2> -->
+    <svg :height="height" :width="width">
+      <g transform="translate(50,50)">
+        <circle
+          v-for="c in output"
+          :key="c.id"
+          :r="c.r"
+          :cx="c.x"
+          :cy="c.y"
+          :fill="c.fill"
+          :stroke="c.stroke"
+        ></circle>
+      </g>
+    </svg>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
 export default {
-  name: "force",
+  name: "graph",
+  props: {
+    tweetData: Array
+  },
   data() {
     return {
+      msg: "👋 from the Chart Component",
       height: 600,
-      width: 600,
-      data: d3.json(
-        "https://gist.githubusercontent.com/mbostock/4062045/raw/5916d145c8c048a6e3086915a6be464467391c62/miserables.json"
-      )
+      width: 600
     };
   },
   created() {
-    this.colourScale = d3.scaleOrdinal(d3.schemeCategory10);
+    this.colourScale = d3
+      .scaleOrdinal()
+      .range(["#5EAFC6", "#FE9922", "#93c464", "#75739F"]);
   },
   methods: {
-    chart() {
-      const links = data.links.map(d => Object.create(d));
-      const nodes = data.nodes.map(d => Object.create(d));
-
-      const simulation = d3
-        .forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id))
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2));
-
-      const svg = d3.select(DOM.svg(width, height));
-
-      const link = svg
-        .append("g")
-        .attr("stroke", "#999")
-        .attr("stroke-opacity", 0.6)
-        .selectAll("line")
-        .data(links)
-        .join("line")
-        .attr("stroke-width", d => Math.sqrt(d.value));
-
-      const node = svg
-        .append("g")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 1.5)
-        .selectAll("circle")
-        .data(nodes)
-        .join("circle")
-        .attr("r", 5)
-        .attr("fill", color)
-        .call(drag(simulation));
-
-      node.append("title").text(d => d.id);
-
-      simulation.on("tick", () => {
-        link
-          .attr("x1", d => d.source.x)
-          .attr("y1", d => d.source.y)
-          .attr("x2", d => d.target.x)
-          .attr("y2", d => d.target.y);
-
-        node.attr("cx", d => d.x).attr("cy", d => d.y);
+    packChart() {
+      const packChart = d3.pack();
+      packChart.size([500, 500]);
+      packChart.padding(10);
+      const output = packChart(this.packData).descendants();
+      return output.map((d, i) => {
+        const fill = this.colourScale(d.depth);
+        return {
+          id: i + 1,
+          r: d.r,
+          x: d.x,
+          y: d.y,
+          fill,
+          stroke: "grey"
+        };
       });
-
-      invalidation.then(() => simulation.stop());
-
-      return svg.node();
-    },
-    drag(simulation) {
-      function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-      }
-
-      function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-      }
-
-      function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-      }
+    }
+  },
+  computed: {
+    packData() {
+      const nestedTweets = d3
+        .nest()
+        .key(d => d.user)
+        .entries(this.tweetData);
+      const packableTweets = { id: "All Tweets", values: nestedTweets };
 
       return d3
-        .drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended);
+        .hierarchy(packableTweets, d => d.values)
+        .sum(d =>
+          d.retweets ? d.retweets.length + d.favorites.length + 1 : 1
+        );
     },
     output() {
-      return this.chart();
+      return this.packChart();
     }
   }
 };
+</script>
+
 
 <style />;
