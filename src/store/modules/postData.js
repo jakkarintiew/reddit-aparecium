@@ -10,7 +10,7 @@ const getters = {
 
 const actions = {
   async fetchPostData({ commit }, inputUrl) {
-    const response = await axios.get(inputUrl + ".json");
+    const response = await axios.get("https://raw.githubusercontent.com/jakkarintiew/CX4242-Spring-2019-Project/api/data/comment_tree.json?token=AHHR7PF45IHQBX53Z5MG7SS4YG2BQ");
     commit('setPostData', response.data);
   }
 };

@@ -1,7 +1,7 @@
 <template>
   <sequential-entrance fromTop>
     <div class="home">
-      <header class="w-full p-10 mb-5">
+      <header class="w-full p-10">
         <div class="mx-auto text-center justify-center mb-10">
           <img width="300" alt="Aparecium logo" src="../assets/logo.svg">
           <h1 class="logo-text text-grey-light font-hairline mt-3">Reddit Aparecium</h1>
@@ -72,7 +72,8 @@ export default {
   watch: {
     // eslint-disable-next-line
     getPostData() {
-      this.postId = this.getPostData[0].data.children[0].data.id;
+      // TODO: change to id when added
+      this.postId = this.getPostData[0].subreddit;
       this.routePost(this.postId);
     }
   }

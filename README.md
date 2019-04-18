@@ -3,12 +3,20 @@
 
 
 # Todos
-1. Integrate json data from back-end (PRAW) 
-2. Integrate D3.js with vue
-3. Create clickable User/Author components
-4. Create front-end data integration components (refer to Reddit User Analyser and other similar projects)
-   1. Post statistics
-   2. User statistics
+1. Header
+   1. Add thumbnail image
+   2. Beautify other post scores
+2. Commnents 
+   1. Create scollable comments component
+   2. Create clickable User/Author components
+3. Viz
+   1. Integrate D3.js with vue
+   2. Create front-end data integration components (refer to Reddit User Analyser and other similar projects)
+      1. Post statistics
+      2. User statistics
+4. Backend integration
+   1. Send link back
+   2. Get tree and array data
 
 # Instruction
 ## Project setup

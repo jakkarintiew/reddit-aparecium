@@ -1,34 +1,38 @@
 <template>
   <div
-    class="bg-black m-2 rounded-lg shadow-md p-1 border border-grey-darkest"
+    class="bg-black m-1 rounded border border-grey-darkest"
     :class="{ 'child-comment': isChild }"
     v-if="body"
   >
-    <header class="bg-transparent ml-1 m-1 p-2" v-on:click="toggleChildren">
+    <header class="bg-transparent m-1 p-2">
       <span
-        class="collapse-button cursor-pointer flex-auto bg-grey-darkest shadow-md px-2 py-1 hover:text-blue-light hover:bg-blue-darker"
+        class="collapse-button cursor-pointer flex-auto bg-grey-darkest px-2 py-1 hover:text-blue-light hover:bg-blue-darker"
+        v-on:click="toggleChildren"
       >{{ showChildren ? '-' : '+' }}</span>
       <span
         class="flex-auto text-center bg-indigo-darker rounded-lg shadow-md px-2 py-1 m-2"
       >{{ author }}</span>
     </header>
+    
     <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <div
         class="comment-anim bg-transparent leading-normal whitespace-pre-line text-grey-light"
         v-if="showChildren"
       >
         <vue-markdown class="px-3" :source="body"></vue-markdown>
-        <template v-if="childComments.length && showChildren">
+
+        <template v-if="replies && showChildren">
           <div>
-              <comment
-                v-for="comment in childComments"
-                class="comment-anim"
-                :key="comment.data.id"
-                :body="comment.data.body"
-                :author="comment.data.author"
-                :replies="comment.data.replies"
-                :is-child="true"
-              />          </div>
+            <comment
+              v-for="comment in replies"
+              class="comment-anim"
+              :key="comment.id"
+              :body="comment.body"
+              :author="comment.author"
+              :replies="comment.replies"
+              :is-child="true"
+            />
+          </div>
         </template>
       </div>
     </transition>
@@ -45,7 +49,7 @@ export default {
   props: {
     author: String,
     body: String,
-    replies: [String, Object], // The last child has empty string
+    replies: Array, // The last child has empty string
     isChild: Boolean
   },
   data: function() {

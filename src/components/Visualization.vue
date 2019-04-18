@@ -29,10 +29,6 @@ export default {
       let data = await d3.json(
         "https://raw.githubusercontent.com/emeeks/d3_in_action_2/master/data/tweets.json"
       );
-      // let data = await d3.json(
-      //   "../assets/data/tweet.json"
-      // );
-      console.log("IM HERE")
       this.loadData = data.tweets;
     }
   }

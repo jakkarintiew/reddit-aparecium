@@ -13,10 +13,10 @@
         ></grid-loader>
       </transition>
     </div>
-
     <div class="flex px-5">
       <transition enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOut">
         <comments
+          id="comments"
           v-if="this.postId && !this.getLoading"
           class="comments-anim w-2/3 my-5 flex-1"
           :post="this.getPostData"
