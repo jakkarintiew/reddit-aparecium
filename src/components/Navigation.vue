@@ -8,7 +8,7 @@
           <h5 class="logo-text text-grey font-hairline mt-3">Analyze Reddit Comments</h5>
         </div>
         <div class="p5">
-          <form v-on:submit.prevent="runAparecium()">
+          <form v-on:submit.prevent="fetchData()">
             <div class="w-2/3 flex mx-auto items-center">
               <input
                 v-model="postUrl"
@@ -17,10 +17,10 @@
                 placeholder="Copy Reddit thread URL here..."
                 autocapitalize="off"
                 autocorrect="off"
-                @keyup.enter="runAparecium()"
+                @keyup.enter="fetchData()"
               >
               <button
-                @click="runAparecium()"
+                @click="fetchData()"
                 class="input-btn btn-hover color-10 appearance-none text-white font-semibold tracking-wide uppercase p-4 rounded-r-lg shadow-md focus:outline-none"
                 type="button"
               >Analyze</button>
@@ -48,13 +48,19 @@ export default {
       radius: "2px"
     };
   },
-  computed: mapGetters(["getPostData", "getLoading"]),
+  computed: mapGetters(["gettreeData", "getarrayData", "getLoading"]),
   methods: {
-    ...mapActions(["fetchPostData", "changeLoadingTrue", "changeLoadingFalse"]),
-    runAparecium() {
+    ...mapActions([
+      "fetchtreeData",
+      "fetcharrayData",
+      "changeLoadingTrue",
+      "changeLoadingFalse"
+    ]),
+    fetchData() {
       if (this.postUrl != "") {
         this.changeLoadingTrue();
-        this.fetchPostData(this.postUrl);
+        this.fetchtreeData(this.postUrl);
+        this.fetcharrayData(this.postUrl);
       }
     },
     routePost(postId) {
@@ -62,7 +68,7 @@ export default {
         this.$router.push({
           path: `/comments/${postId}`,
           params: {
-            post: this.getPostData,
+            post: this.gettreeData,
             postId: this.postId
           }
         });
@@ -70,11 +76,15 @@ export default {
     }
   },
   watch: {
-    // eslint-disable-next-line
-    getPostData() {
+    gettreeData() {
       // TODO: change to id when added
-      this.postId = this.getPostData[0].subreddit;
+      this.postId = this.gettreeData[0].id;
       this.routePost(this.postId);
+      // console.log(this.gettreeData);
+    },
+    getarrayData() {
+      // console.log("Array Data")
+      // console.log(this.getarrayData);
     }
   }
 };

@@ -29,14 +29,14 @@
             }"
           >
             <a :href="post_header.url" target="_blank"></a>
-            <!-- <img
+            <img
               vbind:src="post_header.thumbnail"
               vbind:style="{
                 object-fit: cover; 
                 width: 230px; 
                 height: 230px;
               }"
-            > -->
+            > 
           </span> -->
         </header>
       </template>

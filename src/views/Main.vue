@@ -19,7 +19,7 @@
           id="comments"
           v-if="this.postId && !this.getLoading"
           class="comments-anim w-2/3 my-5 flex-1"
-          :post="this.getPostData"
+          :post="this.gettreeData"
           :postId="this.postId"
         ></comments>
       </transition>
@@ -59,12 +59,12 @@ export default {
     postId: String,
     loading: Boolean
   },
-  computed: mapGetters(["getPostData", "getLoading"]),
+  computed: mapGetters(["gettreeData", "getLoading"]),
   methods: {
     ...mapActions(["fetchPostData", "changeLoadingTrue", "changeLoadingFalse"])
   },
   watch: {
-    getPostData: "changeLoadingFalse"
+    gettreeData: "changeLoadingFalse"
   }
 };
 </script>

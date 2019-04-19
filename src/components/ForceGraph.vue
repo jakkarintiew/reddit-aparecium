@@ -1,17 +1,15 @@
 <template>
-  <div class="bg-black text-grey-lighter rounded shadow-md p-5">
-    <h1>Circle Pack in D3</h1>
-    <!-- <h2>{{ msg }}</h2> -->
+  <div class="bg-black text-grey-lighter rounded shadow-md p-2">
     <svg :height="height" :width="width">
-      <g transform="translate(50,50)">
+      <g transform="translate(5,5)">
         <circle
-          v-for="c in output"
-          :key="c.id"
-          :r="c.r"
-          :cx="c.x"
-          :cy="c.y"
-          :fill="c.fill"
-          :stroke="c.stroke"
+          v-for="(comment, i) in arrayData.comments"
+          :key="comment.id"
+          :cx="Math.floor(Math.random() * 500) + width/5"
+          :cy="Math.floor(Math.random() * 500)"
+          :r="comment.LDA_best_topic_score*50"
+          :fill="colors(parseInt(comment.LDA_best_topic))"
+          stroke="none"
         ></circle>
       </g>
     </svg>
@@ -19,59 +17,45 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import * as d3 from "d3";
 export default {
   name: "graph",
-  props: {
-    tweetData: Array
-  },
   data() {
     return {
-      msg: "👋 from the Chart Component",
-      height: 600,
-      width: 600
+      width: 960,
+      height: 500,
+      padding: 1.5, // separation between same-color nodes
+      clusterPadding: 6, // separation between different-color nodes
+      maxRadius: 12,
+      simulation: null,
+      colors: d3.scaleOrdinal(d3.schemeCategory10)
     };
   },
-  created() {
-    this.colourScale = d3
-      .scaleOrdinal()
-      .range(["#5EAFC6", "#FE9922", "#93c464", "#75739F"]);
+  props: {
+    arrayData: Object
   },
-  methods: {
-    packChart() {
-      const packChart = d3.pack();
-      packChart.size([500, 500]);
-      packChart.padding(10);
-      const output = packChart(this.packData).descendants();
-      return output.map((d, i) => {
-        const fill = this.colourScale(d.depth);
-        return {
-          id: i + 1,
-          r: d.r,
-          x: d.x,
-          y: d.y,
-          fill,
-          stroke: "grey"
-        };
-      });
-    }
-  },
+  created() {},
+  methods: {},
   computed: {
-    packData() {
-      const nestedTweets = d3
-        .nest()
-        .key(d => d.user)
-        .entries(this.tweetData);
-      const packableTweets = { id: "All Tweets", values: nestedTweets };
-
-      return d3
-        .hierarchy(packableTweets, d => d.values)
-        .sum(d =>
-          d.retweets ? d.retweets.length + d.favorites.length + 1 : 1
+    ...mapGetters(["getarrayData"])
+  },
+  watch: {
+    getarrayData() {
+      console.log("Array Data");
+      console.log(this.getarrayData);
+      console.log("Force Simulation");
+      this.simulation = d3
+        .forceSimulation(this.arrayData.comments)
+        .force("charge", d3.forceManyBody().strength(5))
+        .force("center", d3.forceCenter(this.width / 2, this.height / 2))
+        .force(
+          "collision",
+          d3.forceCollide().radius(function(d) {
+            return d.LDA_best_topic_score * 50;
+          })
         );
-    },
-    output() {
-      return this.packChart();
+      this.simulation.restart();
     }
   }
 };

@@ -25,7 +25,7 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Quicksand");
 
 body {
-  background-color: #453e61;
+  background-color: #222222;
   overflow-x: hidden;
 }
 #app {
