@@ -2,6 +2,7 @@
   <div
     class="bg-black m-1 rounded border border-grey-darkest"
     :class="{ 'child-comment': isChild }"
+    :id="id"
     v-if="body"
   >
     <header class="bg-transparent m-1 p-2">
@@ -13,7 +14,7 @@
         class="flex-auto text-center bg-indigo-darker rounded-lg shadow-md px-2 py-1 m-2"
       >{{ author }}</span>
     </header>
-    
+
     <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <div
         class="comment-anim bg-transparent leading-normal whitespace-pre-line text-grey-light"
@@ -22,7 +23,7 @@
         <vue-markdown class="px-3" :source="body"></vue-markdown>
 
         <template v-if="replies && showChildren">
-          <div>
+          <div :id="id">
             <comment
               v-for="comment in replies"
               class="comment-anim"
@@ -47,6 +48,7 @@ import VueMarkdown from "vue-markdown";
 export default {
   name: "comment",
   props: {
+    id: String,
     author: String,
     body: String,
     replies: Array, // The last child has empty string

@@ -25,45 +25,37 @@
           <!-- <span
             class="border border-white"
             vbind:style="{ 
-              background-image:url(post_header.thumbnail);
+              background-image:url({post_header.thumbnail});
             }"
           >
             <a :href="post_header.url" target="_blank"></a>
             <img
-              vbind:src="post_header.thumbnail"
+              :src="post_header.thumbnail"
               vbind:style="{
                 object-fit: cover; 
                 width: 230px; 
                 height: 230px;
               }"
             > 
-          </span> -->
+          </span>-->
         </header>
       </template>
 
-      <div class="text-grey-lighter rounded my-5">
+      <div v-if="comments" class="text-grey-lighter rounded my-5">
         <visualization></visualization>
       </div>
 
-      <div class="commment bg-black text-grey-lighter rounded shadow-md py-2">
-        <div>
-          <div
-            class="vuebar-element-comments"
-            v-bar="{
-            preventParentScroll: true,
-            overrideFloatingScrollbar: true,
-            resizeRefresh: true,
-          }"
-          >
-            <div class="p-3">
-              <comment
-                v-for="comment in comments"
-                :key="comment.id"
-                :body="comment.body"
-                :author="comment.author"
-                :replies="comment.replies"
-              ></comment>
-            </div>
+      <div v-if="comments" class="commment bg-black text-grey-lighter rounded shadow-md py-2">
+        <div id="scrollContainer" class="vuebar-element-comments" v-bar>
+          <div class="p-3">
+            <comment
+              v-for="comment in comments"
+              :key="comment.id"
+              :id="comment.id"
+              :body="comment.body"
+              :author="comment.author"
+              :replies="comment.replies"
+            ></comment>
           </div>
         </div>
       </div>
@@ -74,8 +66,9 @@
 
 <script>
 import Comment from "@/components/Comment";
-import VueMarkdown from "vue-markdown";
 import Visualization from "@/components/Visualization";
+import VueMarkdown from "vue-markdown";
+import VueScrollTo from "vue-scrollto";
 
 export default {
   name: "comments",
@@ -98,6 +91,9 @@ export default {
     getComments: function() {
       this.post_header = this.post[0];
       this.comments = this.post[1];
+    },
+    scrollTo: function(element) {
+      return VueScrollTo.scrollTo(element);
     }
   },
   created: function() {

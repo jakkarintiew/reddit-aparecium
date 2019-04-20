@@ -2,7 +2,7 @@
   <div class="viz h-auto bg-grey-darkest text-grey-light rounded shadow-md p-5">
     <h2 class="text-grey-lighter font-hairline mb-5">Comments Aparecium</h2>
     <div>
-      <graph :arrayData="this.getarrayData"/>
+      <graph v-if="!getLoading" :arrayData="this.getarrayData"/>
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
       data: []
     };
   },
-  computed: mapGetters(["getarrayData"]),
+  computed: mapGetters(["getarrayData",  "getLoading"]),
   created() {
   },
   methods: {

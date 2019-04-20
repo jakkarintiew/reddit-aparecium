@@ -1,20 +1,24 @@
 <template>
   <div>
     <button @click="reload">reload</button>
-    <svg :height="height" :width="width" @mousemove="onMouseMove($event)"></svg>
+    <div id="graph" class="flex">
+      <svg id="fourceGraph" :height="height" :width="width*.7"></svg>
+      <svg id="topic" :height="height" :width="width*.3"></svg>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import * as d3 from "d3";
-import { forceCluster } from "d3-force-cluster";
+
 export default {
   name: "graph",
   data() {
     return {
       width: 850,
       height: 500,
+      split: 0.3,
       mousePosition: {
         x: 0,
         y: 0
@@ -25,26 +29,88 @@ export default {
     arrayData: Object
   },
   mounted() {
-    this.loadData(); // initially load json
+    this.forceGraph(); // initially load json
   },
   created() {
-    // this.loadData();
+    // this.forceGraph();
   },
   methods: {
-    // load data
-    loadData() {
-      var svg = d3.selectAll("svg").call(d3.zoom().on("zoom", zoomed));
+    getTopic(topic_index) {
+      var that = this;
+      d3.select("#topic")
+        .selectAll("*")
+        .remove();
+      var svg = d3.selectAll("#topic");
+      var topics = that.arrayData.LDA_topics;
+      var topic = topics[topic_index];
+      var m = Object.keys(that.arrayData.LDA_topics).length;
+      var colors = d3
+        .scaleSequential(d3.interpolateRainbow)
+        .domain(d3.range(m));
 
-      var width = 850;
+      var topic_word = svg
+        .selectAll(".node")
+        .data(topic)
+        .enter()
+        .append("g")
+        .attr("class", "node");
+
+      topic_word
+        .append("rect")
+        .attr("width", function(d) {
+          return Math.exp(d.score * 5) * 10;
+        })
+        .attr("height", function(d) {
+          return Math.exp(d.score * 5) * 10;
+        })
+        .attr("right", 35)
+        .attr("y", function(d, i) {
+          return i * 45 + 60 - (Math.exp(d.score * 5) * 10) / 2;
+        })
+        .attr("fill", colors(topic_index / 10));
+
+      topic_word
+        .append("text")
+        .attr("dx", 90)
+        .attr("dy", function(d, i) {
+          return i * 45 + 57;
+        })
+        .text(function(d) {
+          return d.term;
+        })
+        .style("font-size", "0.8rem")
+        .style("font-weight", "bold")
+        .attr("fill", "lightgrey");
+
+      topic_word
+        .append("text")
+        .attr("dx", 90)
+        .attr("dy", function(d, i) {
+          return i * 45 + 72;
+        })
+        .text(function(d) {
+          return Math.round(d.score * 1000) / 1000;
+        })
+        .style("font-size", "0.7rem")
+        .style("font-weight", "light")
+        .attr("fill", "lightgrey");
+    },
+    // load data
+    forceGraph() {
+      var that = this;
+      var svg = d3.selectAll("#fourceGraph").call(d3.zoom().on("zoom", zoomed));
+      var width = 850 * 0.7;
       var height = 500;
       var radius = 5;
-      var m = Object.keys(this.arrayData.LDA_topics).length;
+      var m = Object.keys(that.arrayData.LDA_topics).length;
       var clusters = new Array(m);
-      var nodes = this.arrayData.comments;
+      var nodes = that.arrayData.comments;
       var colors = d3
         .scaleSequential(d3.interpolateRainbow)
         .domain(d3.range(m));
       // console.log("Start loop");
+
+      // Get Clusters
       for (var property in nodes) {
         if (nodes.hasOwnProperty(property)) {
           var currComment = nodes[property];
@@ -56,11 +122,11 @@ export default {
             clusters[currComment.LDA_best_topic] = nodes[property];
           }
           currComment.x =
-            Math.cos((currComment.LDA_best_topic / m) * 2 * Math.PI) * 150 +
+            Math.cos((currComment.LDA_best_topic / m) * 2 * Math.PI) * 140 +
             width / 2 +
             Math.random();
           currComment.y =
-            Math.sin((currComment.LDA_best_topic / m) * 2 * Math.PI) * 150 +
+            Math.sin((currComment.LDA_best_topic / m) * 2 * Math.PI) * 140 +
             height / 2 +
             Math.random();
 
@@ -72,8 +138,6 @@ export default {
         }
       }
 
-      // console.log(clusters);
-
       var node = svg
         .append("g")
         .attr("class", "nodes")
@@ -82,7 +146,9 @@ export default {
         .enter()
         .append("circle")
         .attr("r", function(d) {
-          return getRadius(d.LDA_best_topic_score);
+          // return getRadius(d.LDA_best_topic_score);
+          // upvote score as radius
+          return Math.log10(d.score * 1.0 + 2) * 10;
         })
         .attr("fill", function(d) {
           return colors(d.LDA_best_topic / 10);
@@ -95,19 +161,99 @@ export default {
             .on("end", dragended)
         );
 
-      node.append("title").text(function(d) {
-        return d.LDA_best_topic;
+      // node.append("title").text(function(d) {
+      //   return d.body;
+      // });
+
+      var that = this;
+
+      node.on("click", function(d) {
+        console.log("get topic: " + d.LDA_best_topic);
+        return that.getTopic(d.LDA_best_topic);
       });
 
-      //add zoom capabilities
+      // define tooltip
+      var tooltip = d3
+        .select("#graph") // select element in the DOM with id 'chart'
+        .append("div") // append a div element to the element we've selected
+        .attr("class", "tooltip"); // add class 'tooltip' on the divs we just selected
+
+      tooltip
+        .append("span")
+        .append("text")
+        .text("User") // add divs to the tooltip defined above
+        .attr(
+          "class",
+          "author flex-auto text-center bg-red-darker rounded-lg shadow-md mr-1 my-2 px-2 py-1"
+        );
+
+      tooltip
+        .append("span") // add divs to the tooltip defined above
+        .attr(
+          "class",
+          "score flex-auto text-center text-orange-dark mr-1 my-2 px-2 py-1"
+        );
+
+      tooltip
+        .append("div") // add divs to the tooltip defined above
+        .attr("class", "body my-2");
+
+      tooltip
+        .append("div") // add divs to the tooltip defined above
+        .attr("class", "controversiality my-2");
+
+      tooltip
+        .append("div") // add divs to the tooltip defined above
+        .attr("class", "polarity my-2");
+
+      tooltip
+        .append("div") // add divs to the tooltip defined above
+        .attr("class", "subjectivity my-2");
+
+      tooltip
+        .append("div") // add divs to the tooltip defined above
+        .attr("class", "topicScore my-2");
+
+      // mouse event handlers are attached to path so they need to come after its definition
+      node.on("mouseover", function(d) {
+        // when mouse enters div
+        console.log("show tip");
+        tooltip.select(".author").html(d.author);
+        tooltip.select(".score").html(d.score);
+        tooltip
+          .select(".controversiality")
+          .html("Controversiality: " + d.controversiality);
+        tooltip.select(".body").html(d.body);
+        tooltip.select(".polarity").html("Sentiment Polairty: " + d.polarity);
+        tooltip
+          .select(".subjectivity")
+          .html("Sentiment Subjectivity: " + d.subjectivity);
+        tooltip
+          .select(".topicScore")
+          .html("LDA Topic Score: " + d.LDA_best_topic_score);
+        tooltip.style("display", "block"); // set display
+      });
+
+      node.on("mouseout", function() {
+        // when mouse leaves div
+        console.log("Hide tip");
+        tooltip.style("display", "none"); // hide tooltip for that element
+      });
+
+      node.on("mousemove", function(d) {
+        // when mouse moves
+        tooltip
+          .style("top", d3.event.layerY + 10 + "px") // always 10px below the cursor
+          .style("left", d3.event.layerX - 175 + "px"); // always 10px to the right of the mouse
+      });
+
       function zoomed() {
         node.attr("transform", d3.event.transform);
       }
 
-      // console.log("Run Simu");
-
+      // Force Simulation
       var chargeStrength = 0.5;
-      var collideStrength = 0.3;
+      var collideStrength = 0.5;
       var clusterStrength = 0.05;
 
       var simulation = d3
@@ -115,13 +261,13 @@ export default {
         .velocityDecay(0.3)
         // .alphaDecay(0.2)
         .force("charge", d3.forceManyBody().strength(chargeStrength))
-        .force("center", d3.forceCenter(width / 2, height / 2))
+        // .force("center", d3.forceCenter(width / 2, height / 2))
         .force(
           "collision",
           d3
             .forceCollide()
             .radius(function(d) {
-              return getRadius(d.LDA_best_topic_score) + 2;
+              return getRadius(d.LDA_best_topic_score) + 1;
             })
             .strength(collideStrength)
         )
@@ -153,17 +299,6 @@ export default {
         return Math.exp(score * 2.5) * 2;
       }
 
-      // // ramp up collision strength to provide smooth transition
-      // var transitionTime = 3000;
-      // var t = d3.timer(function(elapsed) {
-      //   var dt = elapsed / transitionTime;
-      //   simulation.force(
-      //     "collision",
-      //     d3.forceCollide().strength(Math.pow(dt, 2) * 0.7)
-      //   );
-      //   if (dt >= 1.0) t.stop();
-      // });
-
       function ticked() {
         node
           .attr("cx", function(d) {
@@ -193,18 +328,9 @@ export default {
       }
     },
     reload() {
-      //console.log('reloading...');
-      // this.$svg.empty(); // clear svg --> easiest way to re-create the force graph.
       d3.selectAll("circle").remove();
-      this.loadData();
-    },
-    // mouse events
-    onMouseMove(evt) {
-      //console.log(evt, this)
-      this.mousePosition = {
-        x: evt.clientX,
-        y: evt.clientY
-      };
+      this.forceGraph();
+      this.getTopic(0);
     }
   },
   computed: {
@@ -214,4 +340,30 @@ export default {
 </script>
 
 
-<style />;
+<style>
+.nodes {
+  cursor: pointer;
+}
+
+/* tooltip */
+.tooltip {
+  background: #333;
+  box-shadow: 0 0 5px #2e2e2e;
+  color: lightgray;
+  display: none;
+  font-size: 13px;
+  left: 130px;
+  padding: 15px;
+  position: absolute;
+  text-align: left;
+  top: 95px;
+  width: 350px;
+  z-index: 10;
+}
+
+.tooltip .body {
+  font-size: 15px;
+  font-weight: bold;
+}
+</style>
+

@@ -64,7 +64,7 @@ export default {
     ...mapActions(["fetchPostData", "changeLoadingTrue", "changeLoadingFalse"])
   },
   watch: {
-    gettreeData: "changeLoadingFalse"
+    // gettreeData: "changeLoadingFalse"
   }
 };
 </script>

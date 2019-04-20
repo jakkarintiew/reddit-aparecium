@@ -8,7 +8,7 @@
           <h5 class="logo-text text-grey font-hairline mt-3">Analyze Reddit Comments</h5>
         </div>
         <div class="p5">
-          <form v-on:submit.prevent="fetchData()">
+          <form @submit.prevent="fetchData()">
             <div class="w-2/3 flex mx-auto items-center">
               <input
                 v-model="postUrl"
@@ -77,14 +77,12 @@ export default {
   },
   watch: {
     gettreeData() {
-      // TODO: change to id when added
       this.postId = this.gettreeData[0].id;
       this.routePost(this.postId);
-      // console.log(this.gettreeData);
+      this.changeLoadingFalse();
     },
     getarrayData() {
-      // console.log("Array Data")
-      // console.log(this.getarrayData);
+      this.changeLoadingFalse();
     }
   }
 };
