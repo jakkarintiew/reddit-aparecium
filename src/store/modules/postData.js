@@ -14,13 +14,13 @@ const actions = {
   // Static Array
   async fetcharrayData({ commit }, inputUrl) {
     console.log("Fetching Array Data...")
-    const response = await axios.get("https://raw.githubusercontent.com/jakkarintiew/CX4242-Spring-2019-Project/api/data/comment_tree_array_scheme.json?token=AHHR7PDE4YS2IEW7Y2O4MQC4YI6DY");
+    const response = await axios.get("https://raw.githubusercontent.com/jakkarintiew/CX4242-Spring-2019-Project/api/data/array_n412.json?token=AHHR7PFTT77WS4JU4UJVND24YO34K");
     commit('setarrayData', response.data);
   },
   // Static Tree
   async fetchtreeData({ commit }, inputUrl) {
     console.log("Fetching Tree Data...")
-    const response = await axios.get("https://raw.githubusercontent.com/jakkarintiew/CX4242-Spring-2019-Project/Data/comment_tree.json?token=AHHR7PE4USJGBOYYWHKNJ4S4YI65C");
+    const response = await axios.get("https://raw.githubusercontent.com/jakkarintiew/CX4242-Spring-2019-Project/api/data/tree_n412.json?token=AHHR7PFVQKYVYHVL5YCIHK24YO34O");
     commit('settreeData', response.data);
   }
 };
