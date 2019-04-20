@@ -2,8 +2,8 @@
   <div>
     <button @click="reload">reload</button>
     <div id="graph" class="flex">
-      <svg id="fourceGraph" :height="height" :width="width*.7"></svg>
-      <svg id="topic" :height="height" :width="width*.3"></svg>
+      <svg id="forceGraph" :height="height" :width="width*.75"></svg>
+      <svg id="topic" :height="height" :width="width*.25"></svg>
     </div>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
     return {
       width: 850,
       height: 500,
-      split: 0.3,
+      split: 0.25,
       mousePosition: {
         x: 0,
         y: 0
@@ -29,7 +29,8 @@ export default {
     arrayData: Object
   },
   mounted() {
-    this.forceGraph(); // initially load json
+    this.reload();
+    // this.forceGraph(); // initially load json
   },
   created() {
     // this.forceGraph();
@@ -58,14 +59,14 @@ export default {
       topic_word
         .append("rect")
         .attr("width", function(d) {
-          return Math.exp(d.score * 5) * 10;
+          return Math.exp(d.score * 3) * 10;
         })
         .attr("height", function(d) {
-          return Math.exp(d.score * 5) * 10;
+          return Math.exp(d.score * 3) * 10;
         })
-        .attr("right", 35)
+        .attr("x", 35)
         .attr("y", function(d, i) {
-          return i * 45 + 60 - (Math.exp(d.score * 5) * 10) / 2;
+          return i * 45 + 60 - (Math.exp(d.score * 3) * 10) / 2;
         })
         .attr("fill", colors(topic_index / 10));
 
@@ -98,9 +99,9 @@ export default {
     // load data
     forceGraph() {
       var that = this;
-      var svg = d3.selectAll("#fourceGraph").call(d3.zoom().on("zoom", zoomed));
-      var width = 850 * 0.7;
-      var height = 500;
+      var svg = d3.selectAll("#forceGraph").call(d3.zoom().on("zoom", zoomed));
+      var width = that.width * (1-that.split);
+      var height = that.height;
       var radius = 5;
       var m = Object.keys(that.arrayData.LDA_topics).length;
       var clusters = new Array(m);
@@ -121,12 +122,13 @@ export default {
           ) {
             clusters[currComment.LDA_best_topic] = nodes[property];
           }
+
           currComment.x =
-            Math.cos((currComment.LDA_best_topic / m) * 2 * Math.PI) * 140 +
+            Math.cos((currComment.LDA_best_topic / m) * 2 * Math.PI) * 150 +
             width / 2 +
             Math.random();
           currComment.y =
-            Math.sin((currComment.LDA_best_topic / m) * 2 * Math.PI) * 140 +
+            Math.sin((currComment.LDA_best_topic / m) * 2 * Math.PI) * 150 +
             height / 2 +
             Math.random();
 
@@ -146,9 +148,7 @@ export default {
         .enter()
         .append("circle")
         .attr("r", function(d) {
-          // return getRadius(d.LDA_best_topic_score);
-          // upvote score as radius
-          return Math.log10(d.score * 1.0 + 2) * 10;
+          return getRadius(d);
         })
         .attr("fill", function(d) {
           return colors(d.LDA_best_topic / 10);
@@ -217,7 +217,6 @@ export default {
       // mouse event handlers are attached to path so they need to come after its definition
       node.on("mouseover", function(d) {
         // when mouse enters div
-        console.log("show tip");
         tooltip.select(".author").html(d.author);
         tooltip.select(".score").html(d.score);
         tooltip
@@ -236,7 +235,6 @@ export default {
 
       node.on("mouseout", function() {
         // when mouse leaves div
-        console.log("Hide tip");
         tooltip.style("display", "none"); // hide tooltip for that element
       });
 
@@ -259,15 +257,15 @@ export default {
       var simulation = d3
         .forceSimulation(nodes)
         .velocityDecay(0.3)
-        // .alphaDecay(0.2)
+        .alphaDecay(0.01)
         .force("charge", d3.forceManyBody().strength(chargeStrength))
-        // .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("center", d3.forceCenter(width / 2, height / 2))
         .force(
           "collision",
           d3
             .forceCollide()
             .radius(function(d) {
-              return getRadius(d.LDA_best_topic_score) + 1;
+              return getRadius(d) + 1;
             })
             .strength(collideStrength)
         )
@@ -295,8 +293,12 @@ export default {
         )
         .on("tick", ticked);
 
-      function getRadius(score) {
-        return Math.exp(score * 2.5) * 2;
+      function getRadius(d) {
+        // return Math.exp(d.LDA_best_topic_score * 2.5) * 2;
+        // upvote score as radius
+        return -30 / (1 + Math.exp((d.score - 30) / 10)) + 31;
+        // var sqrtScale = d3.scaleSqrt().range([1, 20]).clamp(true);
+        // return sqrtScale(d.score)
       }
 
       function ticked() {
@@ -328,7 +330,13 @@ export default {
       }
     },
     reload() {
-      d3.selectAll("circle").remove();
+      d3.select("#forceGraph")
+        .selectAll("circle")
+        .remove();
+      d3.select("#topic")
+        .selectAll("rect")
+        .remove();
+
       this.forceGraph();
       this.getTopic(0);
     }
@@ -343,6 +351,13 @@ export default {
 <style>
 .nodes {
   cursor: pointer;
+  stroke: rgb(83, 83, 83);
+  stroke-width: 0.5px;
+}
+
+.nodes :hover {
+  stroke: azure;
+  stroke-width: 1px;
 }
 
 /* tooltip */
