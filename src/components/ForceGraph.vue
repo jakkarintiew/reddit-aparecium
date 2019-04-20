@@ -55,16 +55,16 @@ export default {
           ) {
             clusters[currComment.LDA_best_topic] = nodes[property];
           }
-          // currComment.x =
-          //   Math.cos((currComment.LDA_best_topic / m) * 2 * Math.PI) * 150 +
-          //   width / 2 +
-          //   Math.random();
-          // currComment.y =
-          //   Math.sin((currComment.LDA_best_topic / m) * 2 * Math.PI) * 150 +
-          //   height / 2 +
-          //   Math.random();
+          currComment.x =
+            Math.cos((currComment.LDA_best_topic / m) * 2 * Math.PI) * 150 +
+            width / 2 +
+            Math.random();
+          currComment.y =
+            Math.sin((currComment.LDA_best_topic / m) * 2 * Math.PI) * 150 +
+            height / 2 +
+            Math.random();
 
-          if (currComment.LDA_best_topic == []) {
+          if (currComment.LDA_best_topic == "[]") {
             // console.log(currComment);
             currComment.x = width / 2;
             currComment.y = height / 2;
@@ -96,7 +96,7 @@ export default {
         );
 
       node.append("title").text(function(d) {
-        return d.body;
+        return d.LDA_best_topic;
       });
 
       //add zoom capabilities
@@ -106,13 +106,14 @@ export default {
 
       // console.log("Run Simu");
 
-      var chargeStrength = 0.6;
-      var collideStrength = 0.4;
-      var centerStrenght = 0.01
-      var clusterStrength = 0.04;
+      var chargeStrength = 0.5;
+      var collideStrength = 0.3;
+      var clusterStrength = 0.05;
 
       var simulation = d3
         .forceSimulation(nodes)
+        .velocityDecay(0.3)
+        // .alphaDecay(0.2)
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force(
@@ -186,7 +187,7 @@ export default {
         d.fy = d3.event.y;
       }
       function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(0);
+        if (!d3.event.active) simulation.alphaTarget(0.3);
         d.fx = null;
         d.fy = null;
       }
