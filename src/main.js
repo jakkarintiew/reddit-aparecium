@@ -9,7 +9,7 @@ import AOS from 'aos'
 import Vuebar from 'vuebar'
 import Affix from 'vue-affix'
 import VueScrollTo from 'vue-scrollto'
-
+import VueResource from 'vue-resource'
 
 AOS.init()
 Vue.use(SequentialEntrance)
@@ -28,6 +28,7 @@ Vue.use(VueScrollTo, {
   x: false,
   y: true
 })
+Vue.use(VueResource)
 
 Vue.config.productionTip = false
 
