@@ -58,7 +58,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
 $text: #6b7c93;
 
 .comment {

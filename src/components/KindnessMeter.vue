@@ -30,7 +30,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .progress {
   line-height: 2rem;
   font-size: 1rem;
