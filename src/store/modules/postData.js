@@ -22,7 +22,7 @@ const actions = {
     // console.log('Fetching API Array Data...')
 
     const response = await axios.get(
-      `http://127.0.0.1:5000/api/array?post_url=${inputUrl}`
+      `http://127.0.0.1:5000/api/array?post_url=${inputUrl}&num_topics=10`
     )
 
     // console.log(response)

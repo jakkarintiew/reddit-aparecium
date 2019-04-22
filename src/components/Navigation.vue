@@ -3,12 +3,12 @@
     <div class="home">
       <header class="w-full p-10">
         <div class="mx-auto text-center justify-center mb-10">
-          <img width="300" alt="Aparecium logo" src="../assets/logo.svg">
+          <img width="300" alt="Aparecium logo" src="../assets/logo.png">
           <h1 class="logo-text text-grey-light font-hairline mt-3">Reddit Aparecium</h1>
           <h5 class="logo-text text-grey font-hairline mt-3">Analyze Reddit Comments</h5>
         </div>
         <div class="p5">
-          <form @submit.prevent="fetchData()">
+          <form @submit.prevent>
             <div class="w-2/3 flex mx-auto items-center">
               <input
                 v-model="postUrl"

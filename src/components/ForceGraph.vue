@@ -162,7 +162,7 @@ export default {
           return getRadius(d);
         })
         .attr("fill", function(d) {
-          return colors(d.LDA_best_topic / 10);
+          return colors(d.LDA_best_topic / m);
         })
         .call(
           d3
@@ -177,8 +177,8 @@ export default {
       // });
 
       node.on("click", function(d) {
-        that.getTopic(d.LDA_best_topic);
         that.analyseUser(d.author);
+        that.getTopic(d.LDA_best_topic);
       });
 
       // define tooltip

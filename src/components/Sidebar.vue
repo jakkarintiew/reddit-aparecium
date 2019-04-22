@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <div class="side-bar bg-black text-grey-lighter rounded shadow-md p-5">
+    <div class="side-bar bg-black text-grey-lighter rounded shadow-md p-5 pr-0">
       <h1 class="text-grey-lighter font-hairline">Redditor Overview</h1>
 
       <div  >
