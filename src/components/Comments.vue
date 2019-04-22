@@ -11,7 +11,8 @@
               <div class="my-2">
                 Posted by
                 <span
-                  class="flex-auto text-center bg-red-darker rounded-lg shadow-md px-2 py-1"
+                  @click="analyseUser(post_header.author)"
+                  class="flex-auto cursor-pointer text-center bg-red-darker rounded-lg shadow-md px-2 py-1"
                 >{{ post_header.author }}</span>
               </div>
               <div class="text-orange my-2">{{ post_header.score }}</div>
@@ -40,14 +41,14 @@
           </span>-->
         </header>
       </template>
-
+      <!-- fix if condition to loading -->
       <div v-if="comments" class="text-grey-lighter rounded my-5">
         <visualization></visualization>
       </div>
 
-      <div v-if="comments" class="commment bg-black text-grey-lighter rounded shadow-md py-2">
-        <div id="scrollContainer" class="vuebar-element-comments" v-bar>
-          <div class="p-3">
+      <div v-if="comments" class="commment bg-black text-grey-lighter rounded shadow-md p-5 ">
+        <div class="vuebar-element-comments" v-bar>
+          <div>
             <comment
               v-for="comment in comments"
               :key="comment.id"
@@ -55,6 +56,8 @@
               :body="comment.body"
               :author="comment.author"
               :replies="comment.replies"
+              :score="comment.score"
+              :created_utc="comment.created_utc"
             ></comment>
           </div>
         </div>
@@ -68,7 +71,7 @@
 import Comment from "@/components/Comment";
 import Visualization from "@/components/Visualization";
 import VueMarkdown from "vue-markdown";
-import VueScrollTo from "vue-scrollto";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   name: "comments",
@@ -88,16 +91,22 @@ export default {
     "vue-markdown": VueMarkdown
   },
   methods: {
+    ...mapActions(["fetchAbout", "fetchComments", "fetchSubmitted"]),
+    ...mapMutations(["setUsername"]),
+    analyseUser(username) {
+      this.setUsername(username);
+      this.fetchAbout();
+      this.fetchComments("");
+      this.fetchSubmitted("");
+    },
     getComments: function() {
       this.post_header = this.post[0];
       this.comments = this.post[1];
-    },
-    scrollTo: function(element) {
-      return VueScrollTo.scrollTo(element);
     }
   },
-  created: function() {
+  mounted: function() {
     this.getComments(this.postId);
+    this.analyseUser(this.post_header.author);
   },
   watch: {
     $route: function(to, from) {
@@ -111,12 +120,12 @@ export default {
 </script>
 
 <style scoped>
-/* .title {
-  font-family: "Quicksand", sans-serif;
-} */
 .commment {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: lighter;
+}
+.title {
+  font-family: "Quicksand", sans-serif;
 }
 </style>

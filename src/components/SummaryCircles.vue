@@ -1,5 +1,5 @@
 <template>
-  <div class="core-summary my-5">
+  <div class="core-summary">
     <div class="stat-circle stat-circle--comments" :data-value="totalComments" data-type="comments"></div>
 
     <div
@@ -50,23 +50,13 @@ export default {
   margin-left: 0;
 
   &::before {
-    position: absolute;
-    content: attr(data-value);
-    color: #555;
-    text-align: center;
-    font-weight: 300;
-    font-size: 1.5rem;
-  }
-
-  &::after {
-    position: absolute;
+    position: relative;
     content: attr(data-type);
-    text-transform: uppercase;
+    text-transform: relative;
     background-color: #555;
     text-align: center;
-    min-width: 100px;
     font-size: 0.8rem;
-    padding: 4px 10px;
+    padding: 5px 7px;
     // top: 50%;
     // bottom: -3px;
     // transform: translateX(-50%);
@@ -74,7 +64,17 @@ export default {
     font-weight: 600;
     border-radius: 5px;
     white-space: nowrap;
-    transform: translate(60px, 2px);
+    transform: translate(0px, 0px);
+  }
+
+  &::after {
+    position: absolute;
+    content: attr(data-value);
+    color: #555;
+    text-align: center;
+    font-weight: 300;
+    font-size: 1.5rem;
+    transform: translate(8px, -4px);
   }
 
   &--comments {
@@ -83,11 +83,11 @@ export default {
     border-color: $comments-color;
 
     &::before {
-      color: $comments-color;
+      background-color: $comments-color;
     }
 
     &::after {
-      background-color: $comments-color;
+      color: $comments-color;
     }
   }
 
@@ -97,11 +97,11 @@ export default {
     border-color: $submitted-color;
 
     &::before {
-      color: $submitted-color;
+      background-color: $submitted-color;
     }
 
     &::after {
-      background-color: $submitted-color;
+      color: $submitted-color;
     }
   }
 
@@ -111,11 +111,11 @@ export default {
     border-color: $controversiality-color;
 
     &::before {
-      color: $controversiality-color;
+      background-color: $controversiality-color;
     }
 
     &::after {
-      background-color: $controversiality-color;
+      color: $controversiality-color;
     }
   }
 
@@ -125,11 +125,11 @@ export default {
     border-color: $per-comment-color;
 
     &::before {
-      color: $per-comment-color;
+      background-color: $per-comment-color;
     }
 
     &::after {
-      background-color: $per-comment-color;
+      color: $per-comment-color;
     }
   }
 
@@ -139,11 +139,11 @@ export default {
     border-color: $per-submission-color;
 
     &::before {
-      color: $per-submission-color;
+      background-color: $per-submission-color;
     }
 
     &::after {
-      background-color: $per-submission-color;
+      color: $per-submission-color;
     }
   }
 }

@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import postData from './modules/postData';
-import loading from './modules/loading';
+import userData from './modules/userData';
+
 
 
 // Load Vuex
@@ -11,6 +12,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
     postData,
-    loading
+    userData
   }
 });

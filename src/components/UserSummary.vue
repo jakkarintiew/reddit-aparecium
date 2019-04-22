@@ -1,20 +1,27 @@
 <template>
   <section class="summary">
     <div class="py-5">
-      <h3>
-        Overview for
-        <a target="_blank" :href="userLink">/u/{{username}}</a>
-      </h3>
-      <p class="subtext">
+      <h2 class="mb-5">
+        <a
+          class="bg-red-darker text-bg font-bold no-underline rounded-lg shadow-sm p-2"
+          target="_blank"
+          :href="userLink"
+        >/u/{{username}}</a>
+      </h2>
+
+      <p class="subtext mb-2">
         Joined Reddit
-        <strong>{{ date('relative', about.created_utc) }}</strong>
-        ({{ date('utc', about.created_utc) }})
+        <span class="font-semibold">{{ date('relative', about.created_utc) }} on {{ date('utc', about.created_utc) }}</span>
       </p>
+
       <p>
-        <small>*Data is available from 1000 comments and 1000 submissions ago (Reddit API limitations)</small>
+        <small
+          class="text-grey-dark text-xs"
+        >*Data is available from 1000 comments and 1000 submissions ago (Reddit API limitations)</small>
       </p>
 
       <summary-circles
+        class="my-5"
         :totalComments="totalComments"
         :totalSubmitted="totalSubmitted"
         :controversiality="controversialityScore"
@@ -22,39 +29,42 @@
         :karmaPerSubmitted="karmaPerSubmitted"
       ></summary-circles>
 
-      <h3>Top subreddits</h3>
-      <div class="input-group input-group-lg input-rangeslider">
-        <input type="range" min="1" max="100" step="1" v-model="numSubreddits">
-      </div>
-      <div>
-        <div :key="subreddit.name" v-for="subreddit in topSubreddits">
+      <div class="my-10">
+        <h3>Top subreddits</h3>
+        <!-- <div class="input-group input-group-lg input-rangeslider">
+          <input type="range" min="1" max="100" step="1" v-model="numSubreddits">
+        </div>-->
+
+        <div class="my-5" :key="subreddit.name" v-for="subreddit in topSubreddits">
           <a
-            class="text-left bg-black text-grey-lighter rounded-lg shadow-md p-2"
+            class="bg-indigo-darker font-bold text-sm no-underline rounded-lg shadow-sm p-2 mr-2"
             target="_blank"
             :href="subredditLink(subreddit.name)"
-          >
-            /r/{{subreddit.name}}
-            <div>
-              <small>{{ subreddit.count }} {{ subreddit.count == 1 ? 'post' : 'posts' }} ({{ percentageOf(subreddit.count) }}%)</small>
-            </div>
-          </a>
+          >/r/{{subreddit.name}}</a>
+          <span>
+            <small>{{ subreddit.count }} {{ subreddit.count == 1 ? 'post' : 'posts' }} ({{ percentageOf(subreddit.count) }}%)</small>
+          </span>
         </div>
       </div>
 
       <hr>
 
-      <h3>Most frequently used words</h3>
-      <div class="input-group input-group-lg input-rangeslider">
+      <!-- <div class="input-group input-group-lg input-rangeslider">
         <input type="range" min="1" max="100" step="1" v-model="numFrequentWords">
-      </div>
-      <ul class="d-flex flex-wrap justify-content-center">
-        <li class="card card--dark" :key="word.name" v-for="word in mostFrequentlyUsedWords">
-          <a target="_blank" :href="googleLink(word.name)">
-            {{ word.name }}
+      </div>-->
+      <div class="my-10">
+        <h3>Most frequently used words</h3>
+        <div class="my-3" :key="word.name" v-for="word in mostFrequentlyUsedWords">
+          <a
+            class="bg-grey-darkest font-bold text-sm no-underline rounded-md shadow-sm px-2 py-1 mr-2"
+            target="_blank"
+            :href="googleLink(word.name)"
+          >{{ word.name }}</a>
+          <span>
             <small>{{ word.frequency }} times</small>
-          </a>
-        </li>
-      </ul>
+          </span>
+        </div>
+      </div>
 
       <hr>
 
@@ -128,7 +138,6 @@
 
 <script>
 import SummaryCircles from "@/components/SummaryCircles";
-import KindnessMeter from "@/components/KindnessMeter";
 import GraphSection from "@/components/GraphSection";
 import Comment from "@/components/Comment2";
 
@@ -138,7 +147,6 @@ export default {
   name: "user-summary",
   components: {
     SummaryCircles,
-    KindnessMeter,
     GraphSection,
     Comment
   },
@@ -179,13 +187,13 @@ export default {
         this.subredditCounts = this.calculateSubredditCounts();
       }
 
-      let counts = this.subredditCounts.slice(0);
+      let counts = this.subredditCounts.slice(0, 10);
 
       if (counts.length > this.numSubreddits)
         counts.length = this.numSubreddits;
-
       return counts;
     },
+
     mostFrequentlyUsedWords() {
       if (
         this.isLoading ||
@@ -200,7 +208,7 @@ export default {
         this.newUser = false;
       }
 
-      let counts = this.wordCounts.slice(0);
+      let counts = this.wordCounts.slice(0, 10);
 
       if (counts.length > this.numFrequentWords)
         counts.length = this.numFrequentWords;
@@ -284,7 +292,6 @@ export default {
         .reverse()
         .forEach(item => {
           this.commentKarma += item.data.score;
-
           daysWithComments.push(item);
           let day = moment(1000 * item.data.created_utc).format("YYYY-MM-DD");
 
@@ -624,7 +631,7 @@ export default {
       let smoothingFactor = Math.round(numDays / 50);
 
       let counter = 0;
-      let counterSubmitted = 0;
+      // let counterSubmitted = 0;
       let days = [];
 
       this.allDaysComments.forEach(day => {
@@ -680,8 +687,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-$text: #cad6e6;
-
 input[type="range"] {
   -webkit-appearance: none;
   margin: 10px 0;

@@ -1,6 +1,6 @@
 <template>
-  <div class="viz h-auto bg-grey-darkest text-grey-light rounded shadow-md p-5">
-    <!-- <h2 class="text-grey-lighter font-hairline mb-5">Comments Aparecium</h2> -->
+  <div class="viz h-auto bg-black text-grey-light rounded shadow-md p-5">
+      <h1 class="text-grey-lighter font-hairline mb-4">Comments Topic Modelling</h1>
     <div>
       <graph v-if="!getLoading" :arrayData="this.getarrayData"/>
     </div>

@@ -1,16 +1,20 @@
 <template>
   <div>
-    <button @click="reload">reload</button>
     <div id="graph" class="flex">
       <svg id="forceGraph" :height="height" :width="width*.75"></svg>
       <svg id="topic" :height="height" :width="width*.25"></svg>
     </div>
+    <button
+      class="bg-grey-darkest text-grey-light text-xs rounded-lg px-2 py-1 focus:outline-none"
+      @click="reload"
+    >reload</button>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import * as d3 from "d3";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   name: "graph",
@@ -36,6 +40,14 @@ export default {
     // this.forceGraph();
   },
   methods: {
+    ...mapActions(["fetchAbout", "fetchComments", "fetchSubmitted"]),
+    ...mapMutations(["setUsername"]),
+    analyseUser(username) {
+      this.setUsername(username);
+      this.fetchAbout();
+      this.fetchComments("");
+      this.fetchSubmitted("");
+    },
     getTopic(topic_index) {
       var that = this;
       d3.select("#topic")
@@ -100,9 +112,8 @@ export default {
     forceGraph() {
       var that = this;
       var svg = d3.selectAll("#forceGraph").call(d3.zoom().on("zoom", zoomed));
-      var width = that.width * (1-that.split);
+      var width = that.width * (1 - that.split);
       var height = that.height;
-      var radius = 5;
       var m = Object.keys(that.arrayData.LDA_topics).length;
       var clusters = new Array(m);
       var nodes = that.arrayData.comments;
@@ -165,11 +176,9 @@ export default {
       //   return d.body;
       // });
 
-      var that = this;
-
       node.on("click", function(d) {
-        console.log("get topic: " + d.LDA_best_topic);
-        return that.getTopic(d.LDA_best_topic);
+        that.getTopic(d.LDA_best_topic);
+        that.analyseUser(d.author);
       });
 
       // define tooltip
@@ -191,7 +200,7 @@ export default {
         .append("span") // add divs to the tooltip defined above
         .attr(
           "class",
-          "score flex-auto text-center text-orange-dark mr-1 my-2 px-2 py-1"
+          "score flex-auto text-center text-white font-bold mr-1 my-2 px-2 py-1"
         );
 
       tooltip
@@ -218,7 +227,7 @@ export default {
       node.on("mouseover", function(d) {
         // when mouse enters div
         tooltip.select(".author").html(d.author);
-        tooltip.select(".score").html(d.score);
+        tooltip.select(".score").html("score: " + d.score);
         tooltip
           .select(".controversiality")
           .html("Controversiality: " + d.controversiality);
@@ -238,10 +247,10 @@ export default {
         tooltip.style("display", "none"); // hide tooltip for that element
       });
 
-      node.on("mousemove", function(d) {
+      node.on("mousemove", function() {
         // when mouse moves
         tooltip
-          .style("top", d3.event.layerY + 10 + "px") // always 10px below the cursor
+          .style("top", d3.event.layerY + 20 + "px") // always 10px below the cursor
           .style("left", d3.event.layerX - 175 + "px"); // always 10px to the right of the mouse
       });
 
@@ -250,14 +259,14 @@ export default {
       }
 
       // Force Simulation
-      var chargeStrength = 0.5;
+      var chargeStrength = -0.5;
       var collideStrength = 0.5;
       var clusterStrength = 0.05;
 
       var simulation = d3
         .forceSimulation(nodes)
         .velocityDecay(0.3)
-        .alphaDecay(0.01)
+        .alphaDecay(0.1)
         .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force(
@@ -296,7 +305,7 @@ export default {
       function getRadius(d) {
         // return Math.exp(d.LDA_best_topic_score * 2.5) * 2;
         // upvote score as radius
-        return -30 / (1 + Math.exp((d.score - 30) / 10)) + 31;
+        return -100 / (1 + Math.exp((d.score - 500) / 150)) + 101;
         // var sqrtScale = d3.scaleSqrt().range([1, 20]).clamp(true);
         // return sqrtScale(d.score)
       }
@@ -377,8 +386,11 @@ export default {
 }
 
 .tooltip .body {
-  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
   font-weight: bold;
+  padding-top: 9px;
+  border: rgb(107, 107, 107);
 }
 </style>
 

@@ -48,41 +48,19 @@ export default {
       radius: "2px"
     };
   },
-  computed: mapGetters(["gettreeData", "getarrayData", "getLoading"]),
+  computed: mapGetters([
+    "gettreeData",
+    "getarrayData",
+    "getarrayLoading",
+    "gettreeLoading"
+  ]),
   methods: {
-    ...mapActions([
-      "fetchtreeData",
-      "fetcharrayData",
-      "changeLoadingTrue",
-      "changeLoadingFalse"
-    ]),
+    ...mapActions(["fetchtreeData", "fetcharrayData"]),
     fetchData() {
       if (this.postUrl != "") {
-        this.changeLoadingTrue();
         this.fetchtreeData(this.postUrl);
         this.fetcharrayData(this.postUrl);
       }
-    },
-    routePost(postId) {
-      if (postId != "") {
-        this.$router.push({
-          path: `/comments/${postId}`,
-          params: {
-            post: this.gettreeData,
-            postId: this.postId
-          }
-        });
-      }
-    }
-  },
-  watch: {
-    gettreeData() {
-      this.postId = this.gettreeData[0].id;
-      this.routePost(this.postId);
-      this.changeLoadingFalse();
-    },
-    getarrayData() {
-      this.changeLoadingFalse();
     }
   }
 };

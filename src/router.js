@@ -13,8 +13,8 @@ export default new Router({
     },
     {
       path: '/comments/:postId',
-      component: Main,
-      props: true
+      component: Main
+      // props: true
     }
   ]
 })

@@ -1,23 +1,26 @@
 <template>
   <div id="main">
-    <div class="side-bar bg-grey-darkest text-grey-lighter rounded shadow-md p-5">
-      <h2 class="text-grey-lighter font-hairline">Aparecium</h2>
-      <div class="container container--summary">
-        <div v-if="isLoading" class="ajax-loader justify-content-center">
+    <div class="side-bar bg-black text-grey-lighter rounded shadow-md p-5">
+      <h1 class="text-grey-lighter font-hairline">Redditor Overview</h1>
+
+      <div  >
+        <div
+          v-show="getCommentsLoading || getSubmittedLoading"
+          class="ajax-loader flex justify-center"
+        >
           <div></div>
           <div></div>
           <div></div>
           <div></div>
         </div>
-        <p v-show="noPosts">*dust*</p>
-        <p v-show="notFound">Not found</p>
-        <div v-show="valid">
+
+        <div v-show="valid" class>
           <user-summary
-            :about="about"
-            :username="username"
-            :comments="comments"
-            :submitted="submitted"
-            :isLoading="isLoading"
+            :about="getAbout"
+            :username="getUsername"
+            :comments="getComments"
+            :submitted="getSubmitted"
+            :isLoading="getCommentsLoading || getSubmittedLoading"
           ></user-summary>
         </div>
       </div>
@@ -27,6 +30,7 @@
 
 <script>
 import UserSummary from "@/components/UserSummary";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "sidebar",
@@ -34,132 +38,46 @@ export default {
     UserSummary
   },
   data() {
-    return {
-      username: "",
-      comments: [],
-      submitted: [],
-      about: {},
-      isLoading: false,
-      notFound: false,
-      noPosts: false,
-      finished: {
-        comments: false,
-        submitted: false
-      }
-    };
+    return {};
   },
   mounted() {
-    this.$watch("username", () => {
-      this.reset();
-    });
-    // Auto fetch
-    if (window.location.hash !== "") {
-      this.username = window.location.hash
-        .split("#")
-        .pop()
-        .trim();
-      this.fetchData();
-    }
+    // this.fetchData();
   },
   computed: {
+    ...mapGetters([
+      "getUsername",
+      "getAbout",
+      "getComments",
+      "getSubmitted",
+      "getCommentsLoading",
+      "getSubmittedLoading"
+    ]),
     valid() {
-      return this.finishedLoading && this.comments.length;
+      return this.finishedLoading && this.getComments.length;
     },
     finishedLoading() {
-      if (!this.comments.length && !this.submitted.length) return;
-      return this.finished.comments && this.finished.submitted;
+      if (this.getCommentsLoading || this.getSubmittedLoading) {
+        return false;
+      } else {
+        return true;
+      }
     }
   },
   methods: {
-    reset() {
-      this.notFound = false;
-      this.noPosts = false;
-      this.finished.comments = false;
-      this.finished.submitted = false;
-      this.comments = [];
-      this.submitted = [];
-    },
-    fetchData() {
-      this.username = "TomShoe02";
-
-      this.reset();
-
-      window.history.replaceState({}, "", `#${this.username}`);
-
-      this.isLoading = true;
-
-      this.fetchAbout();
-      this.fetchCombined("comments");
-      this.fetchCombined("submitted");
-    },
-    fetchAbout() {
-      this.$http
-        .get(`https://www.reddit.com/user/${this.username}/about/.json`)
-        .then(response => {
-          this.about = response.body.data;
-        })
-        .catch(response => {
-          if (response.status === 404) {
-            this.notFound = true;
-            this.isLoading = false;
-          }
-        });
-    },
-    fetchCombined(type, after = "") {
-      this.$http
-        .get(
-          `https://www.reddit.com/user/${
-            this.username
-          }/${type}.json?limit=100&after=${after}`
-        )
-        .then(response => {
-          let arr = response.body.data.children;
-
-          // No more posts
-          if (!arr.length) {
-            this.isLoading = false;
-            this.finished[type] = true;
-            if (
-              !this[type].length &&
-              this.finished.comments &&
-              this.finished.submitted &&
-              !this.comments.length &&
-              !this.submitted.length
-            )
-              this.noPosts = true;
-            return;
-          }
-
-          // Add additional posts to array
-          arr.forEach(item => {
-            this[type].push(item);
-          });
-
-          // If there's (almost certainly) more, recursively fetch more
-          if (arr.length == 100) {
-            this.fetchCombined(type, arr[99].data.name);
-            return;
-          }
-
-          this.finished[type] = true;
-
-          if (this.finished.comments && this.finished.submitted)
-            this.isLoading = false;
-        })
-        .catch(response => {
-          if (response.status === 404) {
-            this.notFound = true;
-            this.isLoading = false;
-          }
-        });
-    }
+    ...mapActions(["fetchAbout", "fetchComments", "fetchSubmitted"]),
+    ...mapMutations(["setUsername"])
+    // fetchData() {
+    //   this.setUsername("gallowboob");
+    //   this.fetchAbout();
+    //   this.fetchComments("");
+    //   this.fetchSubmitted("");
+    // }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-
 @keyframes ajax {
   50% {
     transform: scale(2.5);
@@ -171,11 +89,12 @@ export default {
 }
 .ajax-loader {
   div {
+    position: relative;
     width: 10px;
     height: 10px;
     background-color: #e089d9;
     border-radius: 50%;
-    margin: 0 1rem;
+    margin: 10rem 1rem;
     animation: ajax 0.8s ease infinite;
 
     &:nth-child(2) {
@@ -191,5 +110,8 @@ export default {
       animation-delay: 0.3s;
     }
   }
+}
+.side-bar {
+  font-family: "Quicksand", sans-serif;
 }
 </style>

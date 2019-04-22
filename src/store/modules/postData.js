@@ -1,47 +1,62 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const state = {
   arrayData: {},
-  treeData: []
-};
+  treeData: [],
+  arrayLoading: false,
+  treeLoading: false
+}
 
 const getters = {
   getarrayData: state => state.arrayData,
-  gettreeData: state => state.treeData
-};
+  gettreeData: state => state.treeData,
+  getarrayLoading: state => state.arrayLoading,
+  gettreeLoading: state => state.treeLoading
+}
 
 const actions = {
-  // Static Array
-  async fetcharrayData({ commit }, inputUrl) {
-    // console.log("Fetching Static Array Data...")
-    // const response = await axios.get("https://raw.githubusercontent.com/jakkarintiew/CX4242-Spring-2019-Project/api/data/array_n412.json?token=AHHR7PFTT77WS4JU4UJVND24YO34K");
+  async fetcharrayData ({ commit }, inputUrl) {
+    commit('setarrayLoading', true)
 
-    // console.log("Fetching API Array Data...")
-    const response = await axios.get("http://127.0.0.1:5000/api/array?post_url=" + inputUrl + "&use_bow=true&use_textblob=false");
+    // console.log(`Loading? ${state.arrayLoading}`)
+    // console.log('Fetching API Array Data...')
 
-    commit('setarrayData', response.data);
+    const response = await axios.get(
+      `http://127.0.0.1:5000/api/array?post_url=${inputUrl}`
+    )
+
+    // console.log(response)
+
+    commit('setarrayLoading', false)
+    commit('setarrayData', response.data)
+
+    // console.log(`Loading? ${state.arrayLoading}`)
   },
-  // Static Tree
-  async fetchtreeData({ commit }, inputUrl) {
-    // console.log("Fetching Static Tree Data...")
-    // const response = await axios.get("https://raw.githubusercontent.com/jakkarintiew/CX4242-Spring-2019-Project/api/data/tree_n412.json?token=AHHR7PFVQKYVYHVL5YCIHK24YO34O");
 
-    // console.log("Fetching API Tree Data...")
-    const response = await axios.get("http://127.0.0.1:5000/api/tree?post_url=" + inputUrl + "&use_bow=true&use_textblob=false");
-
-    commit('settreeData', response.data);
+  async fetchtreeData ({ commit }, inputUrl) {
+    commit('settreeLoading', true)
+    // console.log(`Loading? ${state.treeLoading}`)
+    // console.log('Fetching API Tree Data...')
+    const response = await axios.get(
+      `http://127.0.0.1:5000/api/tree?post_url=${inputUrl}`
+    )
+    // console.log(response)
+    commit('settreeLoading', false)
+    commit('settreeData', response.data)
+    // console.log(`Loading? ${state.treeLoading}`)
   }
-};
+}
 
 const mutations = {
   setarrayData: (state, arrayData) => (state.arrayData = arrayData),
-  settreeData: (state, treeData) => (state.treeData = treeData)
-
-};
+  settreeData: (state, treeData) => (state.treeData = treeData),
+  setarrayLoading: (state, loading) => (state.arrayLoading = loading),
+  settreeLoading: (state, loading) => (state.treeLoading = loading)
+}
 
 export default {
   state,
   getters,
   actions,
   mutations
-};
+}

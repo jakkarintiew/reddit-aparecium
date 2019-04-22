@@ -1,14 +1,15 @@
 <template>
   <div>
     <h3>{{ title }}</h3>
-    <div v-show="type !== 'controversiality'" class="chart-switch row">
-      <div class="col align-items-center switch-wrapper">
+    <div v-show="type !== 'controversiality'" class="chart-switch flex my-5">
+      <div class="align-items-center switch-wrapper">
         <p>Cumulative</p>
         <label class="switch">
           <input checked type="checkbox" @click="displayCumulativeGraph(type)">
           <div class="slider round"></div>
         </label>
       </div>
+
       <div class="col align-items-center switch-wrapper">
         <p>Smooth</p>
         <label class="switch">
@@ -28,11 +29,11 @@
 </template>
 
 <script>
-import Chart from '@/components/Chart'
+import Chart from "@/components/Chart";
 
 export default {
-  name: 'graph-section',
-  props: ['id', 'title', 'type', 'days', 'allDays'],
+  name: "graph-section",
+  props: ["id", "title", "type", "days", "allDays"],
   components: {
     Chart
   },
@@ -52,17 +53,17 @@ export default {
         submittedKarma: true,
         controversiality: false
       }
-    }
+    };
   },
   methods: {
     displayCumulativeGraph(type) {
-      this.cumulativeSwitches[type] = !this.cumulativeSwitches[type]
+      this.cumulativeSwitches[type] = !this.cumulativeSwitches[type];
     },
     displaySmoothGraph(type) {
-      this.smoothSwitches[type] = !this.smoothSwitches[type]
+      this.smoothSwitches[type] = !this.smoothSwitches[type];
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -78,8 +79,9 @@ canvas {
   position: relative;
   display: block;
   width: 60px;
-  height: 34px;
+  height: 10px;
   margin: auto;
+  transform: translate(-3px, -6px);
 }
 
 .chart-switch {
@@ -113,7 +115,7 @@ canvas {
 
   &::before {
     position: absolute;
-    content: '';
+    content: "";
     height: 21px;
     width: 21px;
     left: 6px;

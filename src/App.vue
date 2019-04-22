@@ -25,7 +25,7 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Quicksand");
 
 body {
-  background-color: #222222;
+  background-color: #1b1b1b;
   overflow-x: hidden;
 }
 #app {
@@ -33,12 +33,12 @@ body {
   /* -moz-osx-font-smoothing: grayscale; */
 }
 a:link {
-  color: skyblue;
+  color: rgb(238, 238, 238);
 }
 
 /* visited link */
 a:visited {
-  color: grey;
+  color: rgb(238, 238, 238);
 }
 
 .vuebar-element-main {
@@ -52,7 +52,7 @@ a:visited {
 }
 
 .vuebar-element-comments {
-  height: 1000px;
+  height: 3000px;
   width: 100%;
 }
 
