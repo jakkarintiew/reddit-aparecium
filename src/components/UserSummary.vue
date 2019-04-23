@@ -56,7 +56,7 @@
         <h3>Most frequently used words</h3>
         <div class="my-3" :key="word.name" v-for="word in mostFrequentlyUsedWords">
           <a
-            class="bg-grey-darkest font-bold text-sm no-underline rounded-md shadow-sm px-2 py-1 mr-2"
+            class="bg-grey-darkest font-bold text-sm no-underline rounded-sm shadow-sm px-2 py-1 mr-2"
             target="_blank"
             :href="googleLink(word.name)"
           >{{ word.name }}</a>
@@ -67,7 +67,7 @@
       </div>
 
       <hr>
-
+      
       <div class="row">
         <div class="col-md-6">
           <graph-section

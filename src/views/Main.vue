@@ -13,19 +13,19 @@
         ></grid-loader>
       </transition>
     </div>
-    <div class="flex px-5" v-if="!isNewInstance">
+    <div class="flex" v-if="!isNewInstance">
       <transition enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOut">
         <comments
           id="comments"
           v-if="!getarrayLoading && !gettreeLoading"
-          class="comments-anim w-2/3 my-5 flex-1"
+          class="comments-anim w-2/3 ml-5 my-5 flex-1"
           :post="this.gettreeData"
           :postId="this.postId"
         ></comments>
       </transition>
 
       <transition enter-active-class="animated fadeInRight" leave-active-class="animated fadeOut">
-        <sidebar class="sidebar-anim w-1/3 m-5" v-if="!getarrayLoading && !gettreeLoading"></sidebar>
+        <sidebar class="sidebar-anim w-1/3 mx-5 my-5" v-if="!getarrayLoading && !gettreeLoading"></sidebar>
       </transition>
     </div>
   </div>

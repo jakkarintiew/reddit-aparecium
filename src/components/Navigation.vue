@@ -8,7 +8,7 @@
           <h5 class="logo-text text-grey font-hairline mt-3">Analyze Reddit Comments</h5>
         </div>
         <div class="p5">
-          <form @submit.prevent>
+          <form @submit.prevent="fetchData">
             <div class="w-2/3 flex mx-auto items-center">
               <input
                 v-model="postUrl"
@@ -17,12 +17,10 @@
                 placeholder="Copy Reddit thread URL here..."
                 autocapitalize="off"
                 autocorrect="off"
-                @keyup.enter="fetchData()"
               >
               <button
-                @click="fetchData()"
                 class="input-btn btn-hover color-10 appearance-none text-white font-semibold tracking-wide uppercase p-4 rounded-r-lg shadow-md focus:outline-none"
-                type="button"
+                type="submit"
               >Analyze</button>
             </div>
           </form>

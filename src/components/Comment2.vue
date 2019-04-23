@@ -16,7 +16,7 @@
     </div>
 
     <div
-      class="comment bg-black mb-2 rounded-lg border border-grey-darkest p-3"
+      class="comment whitespace-pre-line bg-black mb-2 rounded-lg border border-grey-darkest p-3"
       v-html="compiledMarkdown"
     ></div>
   </div>

@@ -200,7 +200,7 @@ export default {
         .append("span") // add divs to the tooltip defined above
         .attr(
           "class",
-          "score flex-auto text-center text-white font-bold mr-1 my-2 px-2 py-1"
+          "score flex-auto text-center text-grey font-bold mr-1 my-2 px-2 py-1"
         );
 
       tooltip
@@ -227,7 +227,7 @@ export default {
       node.on("mouseover", function(d) {
         // when mouse enters div
         tooltip.select(".author").html(d.author);
-        tooltip.select(".score").html("score: " + d.score);
+        tooltip.select(".score").html(d.score);
         tooltip
           .select(".controversiality")
           .html("Controversiality: " + d.controversiality);
@@ -385,12 +385,11 @@ export default {
   z-index: 10;
 }
 
+
 .tooltip .body {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 0.9rem;
   padding-top: 9px;
-  border: rgb(107, 107, 107);
 }
 </style>
 

@@ -1,9 +1,9 @@
 <template>
-  <div id="main">
-    <div class="side-bar bg-black text-grey-lighter rounded shadow-md p-5 pr-0">
+  <div>
+    <div class="side-bar bg-black text-grey-lighter rounded shadow-md p-5">
       <h1 class="text-grey-lighter font-hairline">Redditor Overview</h1>
 
-      <div  >
+      <div>
         <div
           v-show="getCommentsLoading || getSubmittedLoading"
           class="ajax-loader flex justify-center"
@@ -113,5 +113,8 @@ export default {
 }
 .side-bar {
   font-family: "Quicksand", sans-serif;
+  transition-timing-function: ease;
+  transition: height 1s;
+  height: auto;
 }
 </style>

@@ -10,7 +10,7 @@
         </label>
       </div>
 
-      <div class="col align-items-center switch-wrapper">
+      <div class="align-items-center switch-wrapper">
         <p>Smooth</p>
         <label class="switch">
           <input checked type="checkbox" @click="displaySmoothGraph(type)">

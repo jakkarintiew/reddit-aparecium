@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <canvas class="my-5" :id="id" :ref="id" :width="size.width" :height="size.height"></canvas>
+  <div class="">
+    <canvas :id="id" :ref="id" :width="size.width" :height="size.height"></canvas>
   </div>
 </template>
 
@@ -50,7 +50,7 @@ export default {
       if (this.id === "controversiality-chart") {
         return {
           width: 400,
-          height: 250
+          height: 350
         };
       } else {
         return {

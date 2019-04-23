@@ -23,7 +23,9 @@ export default {
 <style>
 @import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
 @import url("https://fonts.googleapis.com/css?family=Quicksand");
-
+html {
+  scroll-behavior: smooth;
+}
 body {
   background-color: #1b1b1b;
   overflow-x: hidden;
