@@ -3,8 +3,6 @@ import Vuex from 'vuex';
 import postData from './modules/postData';
 import userData from './modules/userData';
 
-
-
 // Load Vuex
 Vue.use(Vuex);
 

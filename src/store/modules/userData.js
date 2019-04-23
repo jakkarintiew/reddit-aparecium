@@ -1,14 +1,17 @@
 import axios from 'axios'
 
-const state = {
-  username: String,
-  about: {},
-  comments: [],
-  submitted: [],
-  commentsLoading: false,
-  submittedLoading: false
+const getDefaultState = () => {
+  return {
+    username: '',
+    about: {},
+    comments: [],
+    submitted: [],
+    commentsLoading: false,
+    submittedLoading: false
+  }
 }
 
+const state = getDefaultState()
 const getters = {
   getUsername: state => state.username,
   getAbout: state => state.about,
@@ -87,7 +90,10 @@ const mutations = {
   pushComments: (state, item) => state.comments.push(item),
   pushSubmitted: (state, item) => state.submitted.push(item),
   setLoadingComments: (state, loading) => (state.commentsLoading = loading),
-  setLoadingSubmitted: (state, loading) => (state.submittedLoading = loading)
+  setLoadingSubmitted: (state, loading) => (state.submittedLoading = loading),
+  reset (state) {
+    Object.assign(state, getDefaultState())
+  }
 }
 
 export default {

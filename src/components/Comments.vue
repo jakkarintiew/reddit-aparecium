@@ -112,8 +112,9 @@ export default {
   },
   methods: {
     ...mapActions(["fetchAbout", "fetchComments", "fetchSubmitted"]),
-    ...mapMutations(["setUsername"]),
+    ...mapMutations(["setUsername", "reset"]),
     analyseUser(username) {
+      this.reset()
       this.setUsername(username);
       this.fetchAbout();
       this.fetchComments("");

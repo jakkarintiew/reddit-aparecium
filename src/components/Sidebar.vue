@@ -41,7 +41,7 @@ export default {
     return {};
   },
   mounted() {
-    // this.fetchData();
+    this.reset
   },
   computed: {
     ...mapGetters([
@@ -65,13 +65,7 @@ export default {
   },
   methods: {
     ...mapActions(["fetchAbout", "fetchComments", "fetchSubmitted"]),
-    ...mapMutations(["setUsername"])
-    // fetchData() {
-    //   this.setUsername("gallowboob");
-    //   this.fetchAbout();
-    //   this.fetchComments("");
-    //   this.fetchSubmitted("");
-    // }
+    ...mapMutations(["setUsername, reset"])
   }
 };
 </script>

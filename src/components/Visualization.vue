@@ -2,7 +2,7 @@
   <div class="viz h-auto bg-black text-grey-light rounded shadow-md p-5">
       <h1 class="text-grey-lighter font-hairline mb-4">Comments Topic Modelling</h1>
     <div>
-      <graph v-if="!getLoading" :arrayData="this.getarrayData"/>
+      <graph v-if="!getarrayLoading" :arrayData="this.getarrayData"/>
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
       data: []
     };
   },
-  computed: mapGetters(["getarrayData",  "getLoading"]),
+  computed: mapGetters(["getarrayData",  "getarrayLoading"]),
   created() {
   },
   methods: {
