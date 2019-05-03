@@ -55,7 +55,7 @@ export default {
   methods: {
     ...mapActions(["fetchtreeData", "fetcharrayData"]),
     fetchData() {
-      if (this.postUrl != "") {
+      if (this.postUrl != "" && !this.getarrayLoading && !this.gettreeLoading) {
         this.fetchtreeData(this.postUrl);
         this.fetcharrayData(this.postUrl);
       }
