@@ -20,9 +20,12 @@ const actions = {
 
     // console.log(`Loading? ${state.arrayLoading}`)
     // console.log('Fetching API Array Data...')
+    // const response = await axios.get(
+    //   `http://127.0.0.1:5000/api/array?post_url=${inputUrl}&num_topics=10`
+    // )
 
     const response = await axios.get(
-      `http://127.0.0.1:5000/api/array?post_url=${inputUrl}&num_topics=10`
+      `https://reddit-aparecium-api.herokuapp.com/api/array?post_url=${inputUrl}`
     )
 
     // console.log(response)
@@ -37,9 +40,14 @@ const actions = {
     commit('settreeLoading', true)
     // console.log(`Loading? ${state.treeLoading}`)
     // console.log('Fetching API Tree Data...')
+    // const response = await axios.get(
+    //   `http://127.0.0.1:5000/api/tree?post_url=${inputUrl}`
+    // )
+
     const response = await axios.get(
-      `http://127.0.0.1:5000/api/tree?post_url=${inputUrl}`
+      `https://reddit-aparecium-api.herokuapp.com/api/tree?post_url=${inputUrl}`
     )
+
     // console.log(response)
     commit('settreeLoading', false)
     commit('settreeData', response.data)
