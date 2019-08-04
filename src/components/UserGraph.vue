@@ -18,24 +18,24 @@
         </label>
       </div>
     </div>
-    <chart
+    <user-chart
       :id="id"
       :days="days"
       :allDays="allDays"
       :cumulative="cumulativeSwitches[type]"
       :smooth="smoothSwitches[type]"
-    ></chart>
+    ></user-chart>
   </div>
 </template>
 
 <script>
-import Chart from "@/components/Chart";
+import UserChart from "@/components/UserChart";
 
 export default {
-  name: "graph-section",
+  name: "user-graph",
   props: ["id", "title", "type", "days", "allDays"],
   components: {
-    Chart
+    UserChart
   },
   data() {
     return {

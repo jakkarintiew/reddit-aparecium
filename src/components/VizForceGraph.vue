@@ -1,8 +1,8 @@
 <template>
   <div>
     <div id="graph" class="flex">
-      <svg id="forceGraph" :height="height" :width="width*.75"></svg>
-      <svg id="topic" :height="height" :width="width*.25"></svg>
+      <svg id="forceGraph" :height="height" :width="width*.75" />
+      <svg id="topic" :height="height" :width="width*.25" />
     </div>
     <button
       class="bg-grey-darkest text-grey-light text-xs rounded-lg px-2 py-1 focus:outline-none"
@@ -17,7 +17,7 @@ import * as d3 from "d3";
 import { mapActions, mapMutations } from "vuex";
 
 export default {
-  name: "graph",
+  name: "force-graph",
   data() {
     return {
       width: 850,
@@ -34,16 +34,12 @@ export default {
   },
   mounted() {
     this.reload();
-    // this.forceGraph(); // initially load json
-  },
-  created() {
-    // this.forceGraph();
   },
   methods: {
     ...mapActions(["fetchAbout", "fetchComments", "fetchSubmitted"]),
     ...mapMutations(["setUsername", "reset"]),
     analyseUser(username) {
-      this.reset()
+      this.reset();
       this.setUsername(username);
       this.fetchAbout();
       this.fetchComments("");
@@ -385,7 +381,6 @@ export default {
   width: 350px;
   z-index: 10;
 }
-
 
 .tooltip .body {
   font-family: Arial, Helvetica, sans-serif;

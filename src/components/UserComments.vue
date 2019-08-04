@@ -38,7 +38,7 @@ marked.setOptions({
 var moment = require("moment");
 
 export default {
-  name: "comment",
+  name: "user-comments",
   props: ["data", "type"],
   computed: {
     compiledMarkdown() {

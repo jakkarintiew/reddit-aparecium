@@ -13,19 +13,20 @@
         ></grid-loader>
       </transition>
     </div>
+
     <div class="flex" v-if="!isNewInstance">
       <transition enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOut">
-        <comments
-          id="comments"
+        <post
+          id="post"
           v-if="!getarrayLoading && !gettreeLoading"
-          class="comments-anim w-2/3 ml-5 my-5 flex-1"
+          class="post-anim w-2/3 ml-5 my-5 flex-1"
           :post="this.gettreeData"
           :postId="this.postId"
-        ></comments>
+        ></post>
       </transition>
 
       <transition enter-active-class="animated fadeInRight" leave-active-class="animated fadeOut">
-        <sidebar class="sidebar-anim w-1/3 mx-5 my-5" v-if="!getarrayLoading && !gettreeLoading"></sidebar>
+        <user-sidebar class="sidebar-anim w-1/3 mx-5 my-5" v-if="!getarrayLoading && !gettreeLoading"></user-sidebar>
       </transition>
     </div>
   </div>
@@ -33,8 +34,8 @@
 
 <script>
 import Navigation from "@/components/Navigation";
-import Comments from "@/components/Comments";
-import Sidebar from "@/components/Sidebar";
+import Post from "@/components/Post";
+import UserSidebar from "@/components/UserSidebar";
 import GridLoader from "vue-spinner/src/GridLoader.vue";
 import { mapGetters } from "vuex";
 
@@ -50,15 +51,10 @@ export default {
   },
   components: {
     navigation: Navigation,
-    comments: Comments,
-    sidebar: Sidebar,
+    Post,
+    UserSidebar,
     GridLoader
   },
-  // props: {
-  //   post: Array,
-  //   postId: String,
-  //   loading: Boolean
-  // },
   computed: mapGetters([
     "getarrayData",
     "gettreeData",

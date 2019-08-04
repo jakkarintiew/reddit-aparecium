@@ -15,13 +15,13 @@
         </div>
 
         <div v-show="valid" class>
-          <user-summary
+          <user-details
             :about="getAbout"
             :username="getUsername"
             :comments="getComments"
             :submitted="getSubmitted"
             :isLoading="getCommentsLoading || getSubmittedLoading"
-          ></user-summary>
+          ></user-details>
         </div>
       </div>
     </div>
@@ -29,13 +29,13 @@
 </template>
 
 <script>
-import UserSummary from "@/components/UserSummary";
+import UserDetails from "@/components/UserDetails";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
-  name: "sidebar",
+  name: "user-sidebar",
   components: {
-    UserSummary
+    UserDetails
   },
   data() {
     return {};

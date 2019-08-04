@@ -2,19 +2,19 @@
   <div class="viz h-auto bg-black text-grey-light rounded shadow-md p-5">
       <h1 class="text-grey-lighter font-hairline mb-4">Comments Topic Modelling</h1>
     <div>
-      <graph v-if="!getarrayLoading" :arrayData="this.getarrayData"/>
+      <force-graph v-if="!getarrayLoading" :arrayData="this.getarrayData"></force-graph>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import ForceGraph from "@/components/ForceGraph";
+import VizForceGraph from "@/components/VizForceGraph";
 
 export default {
-  name: "visualization",
+  name: "viz",
   components: {
-    graph: ForceGraph
+    "force-graph": VizForceGraph
   },
   data: function() {
     return {

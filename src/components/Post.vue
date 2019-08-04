@@ -42,30 +42,14 @@
               :source="post_header.selftext"
             ></vue-markdown>
           </div>
-          <!-- <span
-            class="border border-white"
-            vbind:style="{ 
-              background-image:url({post_header.thumbnail});
-            }"
-          >
-            <a :href="post_header.url" target="_blank"></a>
-            <img
-              :src="post_header.thumbnail"
-              vbind:style="{
-                object-fit: cover; 
-                width: 230px; 
-                height: 230px;
-              }"
-            > 
-          </span>-->
         </header>
       </template>
-      <!-- fix if condition to loading -->
-      <div v-if="comments" class="text-grey-lighter rounded my-5">
-        <visualization></visualization>
+
+      <div v-if="post" class="text-grey-lighter rounded my-5">
+        <viz></viz>
       </div>
 
-      <div v-if="comments" class="commment bg-black text-grey-lighter rounded shadow-md p-3">
+      <div v-if="post" class="commment bg-black text-grey-lighter rounded shadow-md p-3">
         <div class="vuebar-element-comments" v-bar>
           <div>
             <comment
@@ -88,13 +72,13 @@
 
 <script>
 import Comment from "@/components/Comment";
-import Visualization from "@/components/Visualization";
+import Viz from "@/components/Viz";
 import VueMarkdown from "vue-markdown";
 import { mapActions, mapMutations } from "vuex";
 var moment = require("moment");
 
 export default {
-  name: "comments",
+  name: "post",
   data() {
     return {
       post_header: [],
@@ -107,7 +91,7 @@ export default {
   },
   components: {
     comment: Comment,
-    visualization: Visualization,
+    Viz,
     "vue-markdown": VueMarkdown
   },
   methods: {

@@ -19,7 +19,7 @@ Chart.defaults.global.defaultFontFamily = `Avenir,-apple-system,
                 sans-serif`;
 
 export default {
-  name: "chart",
+  name: "user-chart",
   props: ["id", "days", "allDays", "cumulative", "smooth"],
   mounted() {
     this.drawChart();
